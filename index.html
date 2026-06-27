@@ -689,14 +689,17 @@
                 }
             }
             
-            // 4. The Ultimate Safari Fetch Fix (Opaque No-CORS request)
+            // 4. True Fire & Forget (Bypassing Safari's Promise Resolution Delay)
+            // Send the request but DO NOT wait for Safari to resolve the background redirect
             fetch(scriptURL, {
                 method: 'POST',
-                mode: 'no-cors', // Tells Safari to ignore Google's redirects and just push the data
+                mode: 'no-cors',
                 body: dataToSend
-            })
-            .then(() => {
-                // Success executes immediately after data leaves the phone
+            }).catch(err => console.log('Fetch error ignored: ', err));
+
+            // 5. Instant UI Feedback (Optimistic UI)
+            // Show success immediately after 600ms, completely ignoring Safari's 20s background delay
+            setTimeout(() => {
                 form.reset();
                 
                 // Elegant Success State
@@ -712,23 +715,7 @@
                     submitBtn.style.color = 'var(--bg-color)';
                     submitBtn.disabled = false;
                 }, 4500);
-            })
-            .catch(error => {
-                console.error('Network Error:', error);
-                
-                // Elegant Error State
-                submitBtn.innerText = 'Error! Try Again';
-                submitBtn.style.backgroundColor = '#e74c3c'; // Error Red
-                submitBtn.style.color = '#fff';
-                submitBtn.style.opacity = '1';
-                
-                setTimeout(() => {
-                    submitBtn.innerText = originalBtnText;
-                    submitBtn.style.backgroundColor = 'var(--main-color)';
-                    submitBtn.style.color = 'var(--bg-color)';
-                    submitBtn.disabled = false;
-                }, 3000);
-            });
+            }, 600); // 600ms provides a realistic "instant processing" feel
         });
     </script>
 </body>
