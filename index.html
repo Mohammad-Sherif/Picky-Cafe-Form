@@ -543,7 +543,6 @@
     <script>
         const scriptURL = 'https://script.google.com/macros/s/AKfycbwG-QI3PLWWv55VXkMFZCIAae0_qE_WrHaA_SBQ5AMGJaMJZcPaD1inWV_sAOJ9ya3k/exec';
 
-        // القاموس - مترجم وجاهز بالاستثناء بتاعك للغة العربية
         const dictionary = {
             en: {
                 "lang-toggle": "عربي",
@@ -611,16 +610,17 @@
         const form = document.getElementById('feedbackForm');
         const submitBtn = document.getElementById('t-submit');
 
-        form.addEventListener('submit', e => {
+        // ضفنا كلمة async هنا عشان الكود يقدر ينتظر الرد
+        form.addEventListener('submit', async e => {
             e.preventDefault();
 
-            // 1. تغيير حالة الزرار عشان العميل يحس بالاستجابة
+            // 1. تغيير حالة الزرار
             const originalBtnText = submitBtn.innerText;
             submitBtn.innerText = currentLang === 'en' ? 'Sending...' : 'جاري الإرسال...';
-            submitBtn.style.opacity = '0.7'; // بهتان خفيف للزرار
+            submitBtn.style.opacity = '0.7';
             submitBtn.disabled = true;
 
-            // 2. فلترة ثغرة الإكسيل من المنبع
+            // 2. فلترة البيانات
             const sanitizedData = new FormData(form);
             for (let [key, value] of sanitizedData.entries()) {
                 if (typeof value === 'string' && (value.startsWith('=') || value.startsWith('+') || value.startsWith('-') || value.startsWith('@'))) {
@@ -628,22 +628,25 @@
                 }
             }
             
-            // 3. الإرسال في الخلفية بصمت
-            fetch(scriptURL, { 
-                method: 'POST', 
-                body: sanitizedData,
-                keepalive: true
-            }).catch(error => console.error('Background Sync Error:', error.message));
-
-            // 4. تأخير رسالة الشكر 2.5 ثانية (عشان ندي فرصة للداتا توصل قبل قفل الصفحة)
-            setTimeout(() => {
+            try {
+                // 3. الانتظار الحقيقي (await) لحد ما جوجل يستلم الداتا ويرد
+                await fetch(scriptURL, { 
+                    method: 'POST', 
+                    body: sanitizedData
+                });
+                
+                // 4. السطر ده مستحيل يتنفذ إلا لو الخطوة اللي فوق نجحت 100%
                 alert(dictionary[currentLang]['t-success']);
                 form.reset();
+            } catch (error) {
+                console.error('Error:', error.message);
+                alert('Connection Error! Please try again.');
+            } finally {
+                // 5. إرجاع الزرار لشكله الطبيعي في كل الحالات
                 submitBtn.innerText = originalBtnText;
                 submitBtn.style.opacity = '1';
                 submitBtn.disabled = false;
-            }, 2500); 
-
+            }
         });
     </script>
 </body>
