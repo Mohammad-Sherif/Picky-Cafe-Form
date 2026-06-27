@@ -1,17 +1,23 @@
-# Picky Cafe - Serverless Feedback System
+# Picky Cafe - Feedback System
 
 A lightweight, responsive, and serverless feedback collection system designed for cafes and restaurants. This project uses a static HTML/CSS/JS frontend hosted on GitHub Pages and a Google Sheets backend via Google Apps Script to store feedback automatically.
+
+![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white)
+![CSS3](https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white)
+![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
+![Google Apps Script](https://img.shields.io/badge/Google%20Apps%20Script-4285F4?style=for-the-badge&logo=google&logoColor=white)
+
+## Key Features & Engineering Solutions
+
+- **Serverless Architecture:** Decoupled front-end hosted on GitHub Pages, connected seamlessly to a private Google Apps Script backend. No traditional backend hosting required.
+- **Cross-Browser Reliability:** Engineered a hidden `iframe` form submission system to bypass strict iOS Safari Intelligent Tracking Prevention (ITP) and Ad-Blockers, guaranteeing instant data dispatch and reducing request latency.
+- **Security-First Approach:** Implemented front-end payload sanitization to prevent Google Sheets Formula Injection (filtering out `=`, `+`, `-`, `@` executions) and strictly preserving data formatting (e.g., leading zeros in phone numbers).
+- **Bilingual UI (En/Ar):** Custom dictionary system avoiding third-party browser auto-translation bugs, featuring seamless RTL/LTR layout and typography transitions.
+- **Mobile-Optimized Design:** Fully responsive layout constructed with custom breakpoints to prevent horizontal scrolling and ensure a native-app feel on mobile screens.
 
 ## Developed By
 **Mohammad Sherif**
 - **GitHub:** [@mohammad-sherif](https://github.com/mohammad-sherif)
-- 
-## Features
-- **Serverless Architecture:** No backend hosting required.
-- **Bilingual UI:** Easily toggle between English and Arabic.
-- **Mobile Optimized:** Responsive design that prevents horizontal scrolling on mobile screens.
-- **Instant Submission (UX Illusion):** Uses `navigator.sendBeacon()` to send data in the background without making the user wait.
-- **Data Security:** Protected against Google Sheets Formula Injection from the frontend.
 
 ---
 
