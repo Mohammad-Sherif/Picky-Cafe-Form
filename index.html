@@ -663,7 +663,7 @@
         const form = document.getElementById('feedbackForm');
         const submitBtn = document.getElementById('t-submit');
 
-        form.addEventListener('submit', async e => {
+        form.addEventListener('submit', e => {
             e.preventDefault();
 
             // 1. Update UI button state to prevent double submission
@@ -694,7 +694,15 @@
                 const iframeName = 'hidden_iframe_' + Date.now();
                 const iframe = document.createElement('iframe');
                 iframe.name = iframeName;
-                iframe.style.display = 'none';
+                
+                // CRITICAL FIX FOR iOS: Do NOT use display: none
+                // Position the iframe off-screen so Safari still renders it and processes network requests
+                iframe.style.position = 'absolute';
+                iframe.style.top = '-9999px';
+                iframe.style.left = '-9999px';
+                iframe.style.width = '1px';
+                iframe.style.height = '1px';
+                
                 document.body.appendChild(iframe);
 
                 const tempForm = document.createElement('form');
@@ -721,9 +729,11 @@
                     alert(dictionary[currentLang]['t-success']);
                     form.reset();
                     
-                    // Clean up DOM elements
-                    document.body.removeChild(tempForm);
-                    setTimeout(() => document.body.removeChild(iframe), 5000);
+                    // Clean up DOM elements safely after submission is fully processed
+                    setTimeout(() => {
+                        document.body.removeChild(tempForm);
+                        document.body.removeChild(iframe);
+                    }, 5000);
                     
                     // Restore UI button state
                     submitBtn.innerText = originalBtnText;
