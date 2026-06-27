@@ -608,18 +608,21 @@
             }
         }
 
-        const form = document.getElementById('feedbackForm');
+       const form = document.getElementById('feedbackForm');
         const submitBtn = document.getElementById('t-submit');
 
         form.addEventListener('submit', e => {
             e.preventDefault();
             
-            // 1. نطلع رسالة الشكر فوراً للعميل عشان ميستناش ولا ثانية
+            // 1. نبدأ الإرسال فوراً في الخلفية مع تفعيل خاصية الـ keepalive السحرية
+            fetch(scriptURL, { 
+                method: 'POST', 
+                body: new FormData(form),
+                keepalive: true // دي اللي بتضمن إن الداتا توصل حتى لو الصفحة اتقفلت
+            }).catch(error => console.error('Background Sync Error:', error.message));
+
+            // 2. نطلع رسالة الشكر (أثناء ما العميل بيقراها، الداتا بتكون بتسافر لجوجل)
             alert(dictionary[currentLang]['t-success']);
-            
-            // 2. نخلي المتصفح يبعت الداتا لجوجل في الخلفية بصمت
-            fetch(scriptURL, { method: 'POST', body: new FormData(form)})
-                .catch(error => console.error('Background Sync Error:', error.message));
 
             // 3. نفضي الفورم للعميل
             form.reset();
