@@ -2,7 +2,7 @@
 
 A lightweight, responsive, and serverless feedback collection system designed for cafes and restaurants. This project uses a static HTML/CSS/JS frontend hosted on GitHub Pages and a Google Sheets backend via Google Apps Script to store feedback automatically.
 
-## 🚀 Features
+## Features
 - **Serverless Architecture:** No backend hosting required.
 - **Bilingual UI:** Easily toggle between English and Arabic.
 - **Mobile Optimized:** Responsive design that prevents horizontal scrolling on mobile screens.
@@ -11,7 +11,7 @@ A lightweight, responsive, and serverless feedback collection system designed fo
 
 ---
 
-## 🛠️ Step 1: Google Sheets Setup (The Database)
+## Step 1: Google Sheets Setup (The Database)
 To catch the feedback data, you need to set up a Google Sheet.
 
 1. Create a new Google Spreadsheet and name it (e.g., `Picky Feedback`).
@@ -25,7 +25,7 @@ To catch the feedback data, you need to set up a Google Sheet.
 
 ---
 
-## ⚙️ Step 2: Google Apps Script Setup (The Backend)
+## Step 2: Google Apps Script Setup (The Backend)
 We use Google Apps Script as the bridge between the website and the Google Sheet.
 
 1. Open your Google Sheet, click on **Extensions** > **Apps Script**.
@@ -42,7 +42,7 @@ We use Google Apps Script as the bridge between the website and the Google Sheet
 
 ---
 
-## 🔗 Step 3: Link the Frontend
+## Step 3: Link the Frontend
 1. Open your `index.html` file.
 2. Scroll down to the `<script>` section at the bottom.
 3. Replace the `scriptURL` variable with the Web App URL you copied from Step 2:
@@ -50,7 +50,7 @@ We use Google Apps Script as the bridge between the website and the Google Sheet
 
 ---
 
-## 🔧 Common Issues & Troubleshooting
+## Common Issues & Troubleshooting
 
 **If the form submits successfully but no data appears in the Google Sheet:**
 * **Try 1:** Check your Google Sheet. Ensure your headers are strictly located in **Row 1**. If there are empty rows or letters above your headers, delete those rows completely.
