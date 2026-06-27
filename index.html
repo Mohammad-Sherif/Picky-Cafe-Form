@@ -613,19 +613,35 @@
 
         form.addEventListener('submit', e => {
             e.preventDefault();
+
+            // 1. نغير شكل الزرار ونقفله عشان العميل ميضغطش مرتين
+            const originalBtnText = submitBtn.innerText;
+            submitBtn.innerText = currentLang === 'en' ? 'Sending...' : 'جاري الإرسال...';
+            submitBtn.disabled = true;
+
+            // 2. فلترة البيانات (سد ثغرة الإكسيل)
+            const sanitizedData = new FormData(form);
+            for (let [key, value] of sanitizedData.entries()) {
+                if (typeof value === 'string' && (value.startsWith('=') || value.startsWith('+') || value.startsWith('-') || value.startsWith('@'))) {
+                    sanitizedData.set(key, ' ' + value); 
+                }
+            }
             
-            // 1. نبدأ الإرسال فوراً في الخلفية مع تفعيل خاصية الـ keepalive السحرية
+            // 3. الإرسال في الخلفية 
             fetch(scriptURL, { 
                 method: 'POST', 
-                body: new FormData(form),
-                keepalive: true // دي اللي بتضمن إن الداتا توصل حتى لو الصفحة اتقفلت
+                body: sanitizedData,
+                keepalive: true
             }).catch(error => console.error('Background Sync Error:', error.message));
 
-            // 2. نطلع رسالة الشكر (أثناء ما العميل بيقراها، الداتا بتكون بتسافر لجوجل)
-            alert(dictionary[currentLang]['t-success']);
+            // 4. الخدعة: نأخر رسالة الشكر ثانيتين (2000 مللي ثانية) عشان نضمن إن الداتا اتبعتت قبل ما العميل يقفل
+            setTimeout(() => {
+                alert(dictionary[currentLang]['t-success']);
+                form.reset();
+                submitBtn.innerText = originalBtnText;
+                submitBtn.disabled = false;
+            }, 2000); 
 
-            // 3. نفضي الفورم للعميل
-            form.reset();
         });
     </script>
 </body>
