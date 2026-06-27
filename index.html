@@ -577,7 +577,7 @@
             <textarea name="feedback_notes" class="lined-textarea"></textarea>
 
             <footer>
-                <a href="https://www.instagram.com/pickyofficial_1?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" class="ig-link">
+                <a href="https://www.instagram.com/pickyofficial_1" target="_blank" class="ig-link">
                     <svg viewBox="0 0 24 24">
                         <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
                     </svg>
@@ -597,7 +597,7 @@
     </div>
 
     <script>
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbyl6yoJSihmycz0GzlJnF0MGAN8LjCTOKspuasRjEKkQx5Com6vwRiQFV3jV0qTLi9r/exec';
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbwaPamelAAz9DbkqsCzXsH8CtnO3rjVzsVSiBTOj0ndggajSmgOkZhCgXmfogpbNEJZ/exec';
 
         const dictionary = {
             en: {
@@ -668,17 +668,18 @@
         const form = document.getElementById('feedbackForm');
         const submitBtn = document.getElementById('t-submit');
 
-        form.addEventListener('submit', e => {
+        form.addEventListener('submit', async e => {
             e.preventDefault();
 
+            // 1. تغيير حالة الزرار عشان نمنع العميل يدوس مرتين
             const originalBtnText = submitBtn.innerText;
             submitBtn.innerText = currentLang === 'en' ? 'Sending...' : 'جاري الإرسال...';
             submitBtn.style.opacity = '0.7';
             submitBtn.disabled = true;
 
-            // 1. تجميع البيانات وتأمينها من ثغرة الإكسيل
+            // 2. تجميع وتأمين البيانات من ثغرة الإكسيل
             const formData = new FormData(form);
-            const dataToSend = new URLSearchParams(); // صيغة الداتا دي بتخلي الإرسال أسرع وأضمن
+            const dataToSend = new URLSearchParams();
 
             for (let [key, value] of formData.entries()) {
                 if (typeof value === 'string' && (value.startsWith('=') || value.startsWith('+') || value.startsWith('-') || value.startsWith('@'))) {
@@ -688,29 +689,25 @@
                 }
             }
             
-            // 2. السحر كله هنا: بنرمي العهدة على المتصفح نفسه ونقوله ابعت الداتا دي حتى لو اليوزر قفل الصفحة
-            const isQueued = navigator.sendBeacon(scriptURL, dataToSend);
+            try {
+                // 3. الانتظار الإجباري (await): الكود هيقف هنا لحد ما جوجل يستلم الداتا
+                await fetch(scriptURL, { 
+                    method: 'POST', 
+                    body: dataToSend
+                });
 
-            // 3. نرد على العميل فوراً في كسر من الثانية
-            if (isQueued) {
+                // 4. السطر ده مش هيتنفذ إلا لما اللي فوق ينجح 100%
                 alert(dictionary[currentLang]['t-success']);
                 form.reset();
+            } catch (error) {
+                // لو النت فصل أو في مشكلة
+                console.error('Submission Error:', error);
+                alert('Connection Error! Please check your internet connection.');
+            } finally {
+                // 5. إرجاع الزرار لأصله في كل الحالات
                 submitBtn.innerText = originalBtnText;
                 submitBtn.style.opacity = '1';
                 submitBtn.disabled = false;
-            } else {
-                // خطة طوارئ لو متصفح العميل قديم جداً ومش بيدعم الخاصية دي
-                fetch(scriptURL, { method: 'POST', body: dataToSend })
-                    .then(() => {
-                        alert(dictionary[currentLang]['t-success']);
-                        form.reset();
-                    })
-                    .catch(() => alert('Connection Error! Please try again.'))
-                    .finally(() => {
-                        submitBtn.innerText = originalBtnText;
-                        submitBtn.style.opacity = '1';
-                        submitBtn.disabled = false;
-                    });
             }
         });
     </script>
