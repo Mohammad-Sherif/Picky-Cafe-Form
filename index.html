@@ -614,23 +614,15 @@
         form.addEventListener('submit', e => {
             e.preventDefault();
             
-            const originalBtnText = submitBtn.innerText;
-            submitBtn.innerText = currentLang === 'en' ? 'Sending...' : 'جاري الإرسال...';
-            submitBtn.disabled = true; 
-
+            // 1. نطلع رسالة الشكر فوراً للعميل عشان ميستناش ولا ثانية
+            alert(dictionary[currentLang]['t-success']);
+            
+            // 2. نخلي المتصفح يبعت الداتا لجوجل في الخلفية بصمت
             fetch(scriptURL, { method: 'POST', body: new FormData(form)})
-                .then(response => {
-                    alert(dictionary[currentLang]['t-success']);
-                    form.reset();
-                    submitBtn.innerText = originalBtnText;
-                    submitBtn.disabled = false;
-                })
-                .catch(error => {
-                    console.error('Error!', error.message);
-                    alert('Connection Error! Please try again.');
-                    submitBtn.innerText = originalBtnText;
-                    submitBtn.disabled = false;
-                });
+                .catch(error => console.error('Background Sync Error:', error.message));
+
+            // 3. نفضي الفورم للعميل
+            form.reset();
         });
     </script>
 </body>
