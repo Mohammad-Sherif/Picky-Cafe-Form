@@ -167,7 +167,7 @@
             font-weight: 500;
         }
 
-        input[type="checkbox"] {
+        input[type="radio"][name="source"] {
             appearance: none;
             width: 18px;
             height: 18px;
@@ -176,9 +176,10 @@
             cursor: pointer;
             position: relative;
             flex-shrink: 0;
+            margin: 0;
         }
 
-        input[type="checkbox"]:checked::after {
+        input[type="radio"][name="source"]:checked::after {
             content: '✔';
             position: absolute;
             top: -3px;
@@ -450,15 +451,15 @@
 
             <div class="section-title" id="t-sec1">1. How Did You Hear About Us?</div>
             <div class="checkbox-group">
-                <label class="checkbox-item"><input type="checkbox" name="source" value="Instagram"> <span id="t-ig">Instagram</span></label>
-                <label class="checkbox-item"><input type="checkbox" name="source" value="Walk-in"> <span id="t-walk">Walk-in</span></label>
-                <label class="checkbox-item"><input type="checkbox" name="source" value="TikTok"> <span id="t-tt">TikTok</span></label>
-                <label class="checkbox-item"><input type="checkbox" name="source" value="Ordered Before"> <span id="t-ordered">Ordered Before</span></label>
-                <label class="checkbox-item"><input type="checkbox" name="source" value="Facebook"> <span id="t-fb">Facebook</span></label>
-                <label class="checkbox-item"><input type="checkbox" name="source" value="Friend/Family"> <span id="t-friend">Friend / Family</span></label>
+                <label class="checkbox-item"><input type="radio" name="source" value="Instagram"> <span id="t-ig">Instagram</span></label>
+                <label class="checkbox-item"><input type="radio" name="source" value="Walk-in"> <span id="t-walk">Walk-in</span></label>
+                <label class="checkbox-item"><input type="radio" name="source" value="TikTok"> <span id="t-tt">TikTok</span></label>
+                <label class="checkbox-item"><input type="radio" name="source" value="Ordered Before"> <span id="t-ordered">Ordered Before</span></label>
+                <label class="checkbox-item"><input type="radio" name="source" value="Facebook"> <span id="t-fb">Facebook</span></label>
+                <label class="checkbox-item"><input type="radio" name="source" value="Friend/Family"> <span id="t-friend">Friend / Family</span></label>
                 <label class="checkbox-item" style="grid-column: 1 / -1;">
-                    <input type="checkbox" name="source" value="Other"> <span id="t-other">Other:</span>
-                    <input type="text" class="input-line" name="source_other" style="width: 150px; margin-left: 10px;">
+                    <input type="radio" name="source" value="Other" id="other-radio"> <span id="t-other">Other:</span>
+                    <input type="text" class="input-line" name="source_other" id="other-text" style="width: 150px; margin-left: 10px;">
                 </label>
             </div>
 
@@ -481,8 +482,7 @@
             <div class="section-title" id="t-sec3">3. Let's Talk About Your Drink</div>
             <div style="margin-bottom: 40px;">
                 <label style="font-weight: 600; display: block; margin-bottom: 15px;" id="t-what-ordered">What did you order?</label>
-                <input type="text" name="drink_ordered" class="input-line" style="width: 100%; margin-bottom: 15px;">
-                <input type="text" class="input-line" style="width: 100%;">
+                <input type="text" name="drink_ordered" class="input-line" style="width: 100%;">
             </div>
 
             <div class="section-title" id="t-sec4">4. Rate Your Experience</div>
