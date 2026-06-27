@@ -610,42 +610,49 @@
         const form = document.getElementById('feedbackForm');
         const submitBtn = document.getElementById('t-submit');
 
-        // ضفنا كلمة async هنا عشان الكود يقدر ينتظر الرد
-        form.addEventListener('submit', async e => {
+        form.addEventListener('submit', e => {
             e.preventDefault();
 
-            // 1. تغيير حالة الزرار
             const originalBtnText = submitBtn.innerText;
             submitBtn.innerText = currentLang === 'en' ? 'Sending...' : 'جاري الإرسال...';
             submitBtn.style.opacity = '0.7';
             submitBtn.disabled = true;
 
-            // 2. فلترة البيانات
-            const sanitizedData = new FormData(form);
-            for (let [key, value] of sanitizedData.entries()) {
+            // 1. تجميع البيانات وتأمينها من ثغرة الإكسيل
+            const formData = new FormData(form);
+            const dataToSend = new URLSearchParams(); // صيغة الداتا دي بتخلي الإرسال أسرع وأضمن
+
+            for (let [key, value] of formData.entries()) {
                 if (typeof value === 'string' && (value.startsWith('=') || value.startsWith('+') || value.startsWith('-') || value.startsWith('@'))) {
-                    sanitizedData.set(key, ' ' + value); 
+                    dataToSend.append(key, ' ' + value); 
+                } else {
+                    dataToSend.append(key, value);
                 }
             }
             
-            try {
-                // 3. الانتظار الحقيقي (await) لحد ما جوجل يستلم الداتا ويرد
-                await fetch(scriptURL, { 
-                    method: 'POST', 
-                    body: sanitizedData
-                });
-                
-                // 4. السطر ده مستحيل يتنفذ إلا لو الخطوة اللي فوق نجحت 100%
+            // 2. السحر كله هنا: بنرمي العهدة على المتصفح نفسه ونقوله ابعت الداتا دي حتى لو اليوزر قفل الصفحة
+            const isQueued = navigator.sendBeacon(scriptURL, dataToSend);
+
+            // 3. نرد على العميل فوراً في كسر من الثانية
+            if (isQueued) {
                 alert(dictionary[currentLang]['t-success']);
                 form.reset();
-            } catch (error) {
-                console.error('Error:', error.message);
-                alert('Connection Error! Please try again.');
-            } finally {
-                // 5. إرجاع الزرار لشكله الطبيعي في كل الحالات
                 submitBtn.innerText = originalBtnText;
                 submitBtn.style.opacity = '1';
                 submitBtn.disabled = false;
+            } else {
+                // خطة طوارئ لو متصفح العميل قديم جداً ومش بيدعم الخاصية دي
+                fetch(scriptURL, { method: 'POST', body: dataToSend })
+                    .then(() => {
+                        alert(dictionary[currentLang]['t-success']);
+                        form.reset();
+                    })
+                    .catch(() => alert('Connection Error! Please try again.'))
+                    .finally(() => {
+                        submitBtn.innerText = originalBtnText;
+                        submitBtn.style.opacity = '1';
+                        submitBtn.disabled = false;
+                    });
             }
         });
     </script>
