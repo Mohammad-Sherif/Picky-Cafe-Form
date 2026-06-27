@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Picky Cafe - Feedback</title>
-    <!-- استدعاء الخطوط الإنجليزية والعربية -->
+    <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Playfair+Display:ital,wght@0,700;1,400&family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #fde0d0; 
+            --bg-color: #f4e1d6; 
             --main-color: #3e2110;
             --border-color: #3e2110;
         }
@@ -24,7 +24,7 @@
             transition: all 0.3s ease;
         }
 
-        /* تنسيقات اللغة العربية */
+        /* RTL Support */
         body.rtl {
             direction: rtl;
             text-align: right;
@@ -40,7 +40,6 @@
             font-family: 'Cairo', sans-serif;
         }
 
-        /* الحفاظ على الجملة الانجليزية في التذييل */
         body.rtl .footer-script {
             font-family: 'Playfair Display', serif;
             direction: ltr;
@@ -71,7 +70,7 @@
             pointer-events: none;
         }
 
-        /* زر التبديل بين اللغات */
+        /* Language Button */
         .lang-btn {
             position: absolute;
             top: 15px;
@@ -93,49 +92,56 @@
             font-family: 'Poppins', sans-serif;
         }
 
+        /* Header Styles */
         header {
             text-align: center;
             margin-bottom: 30px;
             margin-top: 20px;
         }
 
-        .logo-placeholder {
-            width: 150px;
-            height: 150px;
-            margin: 0 auto;
-            background-color: #d1bba6;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 0.8rem;
-            margin-bottom: 10px;
+        #t-slogan {
+            margin: 5px 0 0 0;
+            font-size: 0.9rem;
+            font-weight: 700;
         }
 
-        h1 {
-            font-size: 3rem;
-            margin: 0;
-            font-weight: 900;
-            letter-spacing: 2px;
-        }
-
-        h2 {
+        h2#t-main-title {
             font-family: 'Playfair Display', serif;
-            font-size: 2rem;
             margin: 5px 0;
+            font-size: 2.2rem;
         }
 
-        body.rtl h2 {
+        body.rtl h2#t-main-title {
             font-weight: 700;
         }
 
         .subtitle {
             font-size: 0.9rem;
-            margin-bottom: 20px;
+            margin: 5px 0 15px 0;
             font-weight: 600;
         }
 
+        /* Heart Divider */
+        .heart-divider {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 10px 0 25px 0;
+            color: var(--main-color);
+        }
+
+        .heart-divider hr {
+            width: 40%;
+            border: none;
+            border-top: 1px solid var(--main-color);
+            margin: 0 15px;
+        }
+
+        .heart-divider span {
+            font-size: 1.2rem;
+        }
+
+        /* Section Styles */
         .section-title {
             background-color: var(--main-color);
             color: var(--bg-color);
@@ -314,19 +320,25 @@
 <body>
 
     <div class="container">
-        <!-- زر التبديل -->
+        <!-- Language Toggle -->
         <button class="lang-btn" id="lang-toggle" onclick="toggleLanguage()">عربي</button>
         
         <form id="feedbackForm">
             
             <header>
-               <div style="text-align: center; margin-bottom: 15px;">
-                <img src="logo.png" alt="Picky Logo" style="max-width: 200px; height: auto; object-fit: contain;">
-                    </div>
-                <h1>Picky</h1>
-                <p id="t-slogan" style="font-weight: 600;">Too Picky? Perfect</p>
+                <div style="text-align: center; margin-bottom: 5px;">
+                    <img src="logo.png" alt="Picky Logo" style="max-width: 200px; height: auto; object-fit: contain;">
+                </div>
+                
+                <p id="t-slogan">Too Picky? Perfect</p>
                 <h2 id="t-main-title">We Value Your Feedback!</h2>
                 <p class="subtitle" id="t-subtitle">Thank you for choosing Picky. Your feedback helps us improve and serve you better.</p>
+                
+                <div class="heart-divider">
+                    <hr>
+                    <span>♥</span>
+                    <hr>
+                </div>
             </header>
 
             <div class="section-title" id="t-sec1">1. How Did You Hear About Us?</div>
@@ -459,10 +471,10 @@
     </div>
 
     <script>
-        // اللينك بتاعك أهو متظبط
+        // Google Apps Script URL
         const scriptURL = 'https://script.google.com/macros/s/AKfycbwG-QI3PLWWv55VXkMFZCIAae0_qE_WrHaA_SBQ5AMGJaMJZcPaD1inWV_sAOJ9ya3k/exec';
 
-        // قاموس اللغتين
+        // Translation Dictionary
         const dictionary = {
             en: {
                 "t-slogan": "Too Picky? Perfect",
@@ -527,20 +539,19 @@
             }
         }
 
-        // لوجيك الإرسال في الخلفية
+        // Background Submission Logic
         const form = document.getElementById('feedbackForm');
         const submitBtn = document.getElementById('t-submit');
 
         form.addEventListener('submit', e => {
-            e.preventDefault(); // بيمنع الصفحة إنها تعمل ريفريش أو تروح للينك الإيرور
+            e.preventDefault();
             
             const originalBtnText = submitBtn.innerText;
             submitBtn.innerText = currentLang === 'en' ? 'Sending...' : 'جاري الإرسال...';
-            submitBtn.disabled = true; // بنقفل الزرار عشان الزبون ميدوسش مرتين
+            submitBtn.disabled = true; 
 
             fetch(scriptURL, { method: 'POST', body: new FormData(form)})
                 .then(response => {
-                    // بيطلع رسالة الشكر، وبيفضي الفورم، وبيرجع الزرار لشكله الطبيعي
                     alert(dictionary[currentLang]['t-success']);
                     form.reset();
                     submitBtn.innerText = originalBtnText;
