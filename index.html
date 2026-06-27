@@ -351,31 +351,24 @@
             cursor: not-allowed;
         }
 
-        /* ستايل حقوق التطوير (بصمتك) */
+        /* ستايل حقوق التطوير (مخفي بشياكة) */
         .developer-credit {
-            margin-top: 35px;
-            font-size: 0.75rem;
-            opacity: 0.6;
+            margin-top: 40px;
+            font-size: 0.65rem; 
+            opacity: 0.25; /* شفافية عالية جداً */
             font-weight: 500;
             letter-spacing: 0.5px;
+            transition: opacity 0.3s ease;
+        }
+
+        .developer-credit:hover {
+            opacity: 0.8; /* ينور بس لما حد يقف عليه */
         }
 
         .developer-credit a {
             color: var(--main-color);
             text-decoration: none;
             font-weight: 700;
-            transition: opacity 0.3s;
-        }
-
-        .developer-credit a:hover {
-            opacity: 0.6;
-        }
-		.developer-credit svg {
-            width: 14px;
-            height: 14px;
-            fill: var(--main-color);
-            vertical-align: middle;
-            margin: 0 3px;
         }
         .mobile-break {
             display: none;
@@ -589,9 +582,8 @@
                 <p class="footer-tags" style="font-weight: 600; font-size: 0.9rem; letter-spacing: 2px;">HOT &bull; ICE &bull; FRESH &bull; BOBA</p>
                 <button type="submit" class="submit-btn" id="t-submit">Submit Feedback</button>
 
-                <!-- بصمة الـ Developer بتاعتك -->
                 <div class="developer-credit" id="t-credit">
-                    Made with <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg> by <a href="https://github.com/mohammad-sherif" target="_blank">Mohammad Sherif</a>
+                    Developed by <a href="https://github.com/mohammad-sherif" target="_blank">Mohammad Sherif</a>
                 </div>
             </footer>
         </form>
@@ -621,7 +613,7 @@
                 "t-footer-top": "Instagram: @PICKYOFFICIAL_1",
                 "t-submit": "Submit Feedback",
                 "t-success": "Thank you! Your feedback has been submitted successfully.",
-				"t-credit": "Made with <svg viewBox='0 0 24 24'><path d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z'/></svg> by <a href='https://github.com/mohammad-sherif' target='_blank'>Mohammad Sherif</a>"
+				"t-credit": "Developed by <a href='https://github.com/mohammad-sherif' target='_blank'>Mohammad Sherif</a>"
             },
             ar: {
                 "lang-toggle": "English",
@@ -643,7 +635,7 @@
                 "t-footer-top": "امسح الكود وتابعنا!",
                 "t-submit": "إرسال التقييم",
                 "t-success": "شكراً! تم إرسال تقييمك بنجاح.",
-                "t-credit": "صُنع بـ <svg viewBox='0 0 24 24'><path d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z'/></svg> بواسطة <a href='https://github.com/mohammad-sherif' target='_blank'>محمد شريف</a>"
+                "t-credit": "تم التطوير بواسطة <a href='https://github.com/mohammad-sherif' target='_blank'>محمد شريف</a>"
             }
         };
 
