@@ -597,7 +597,7 @@
     </div>
 
     <script>
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbwG-QI3PLWWv55VXkMFZCIAae0_qE_WrHaA_SBQ5AMGJaMJZcPaD1inWV_sAOJ9ya3k/exec';
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbyl6yoJSihmycz0GzlJnF0MGAN8LjCTOKspuasRjEKkQx5Com6vwRiQFV3jV0qTLi9r/exec';
 
         const dictionary = {
             en: {
@@ -617,9 +617,10 @@
                 "t-eval-1": "Taste / Flavor", "t-eval-2": "Drink Quality", "t-eval-3": "Freshness of Ingredients", "t-eval-4": "Presentation",
                 "t-eval-5": "Packaging", "t-eval-6": "Staff Friendliness", "t-eval-7": "Speed of Service", "t-eval-8": "Overall Experience",
                 "t-sec5": "5. What Did You Enjoy Most About Your Drink?",
+                "t-footer-top": "Instagram: @PICKYOFFICIAL_1",
                 "t-submit": "Submit Feedback",
-                "t-success": "Thank you! Your feedback has been submitted successfully.",
-                "t-credit": "Made with <svg viewBox='0 0 24 24'><path d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z'/></svg> by <a href='https://github.com/mohammad-sherif' target='_blank'>Mohammad Sherif</a>"
+                "t-success": "Thank you! Your feedback has been submitted successfully."
+				"t-credit": "Made with <svg viewBox='0 0 24 24'><path d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z'/></svg> by <a href='https://github.com/mohammad-sherif' target='_blank'>Mohammad Sherif</a>"
             },
             ar: {
                 "lang-toggle": "English",
@@ -638,9 +639,10 @@
                 "t-eval-1": "الطعم / النكهة", "t-eval-2": "جودة المشروب", "t-eval-3": "طازجة المكونات", 
                 "t-eval-4": "شكل وتقديم المشروب", "t-eval-5": "التغليف", "t-eval-6": "ودّة الموظفين", "t-eval-7": "سرعة الخدمة", "t-eval-8": "تجربتك بشكل عام",
                 "t-sec5": "إيه أكتر حاجة عجبتك في مشروبك 5",
+                "t-footer-top": "امسح الكود وتابعنا!",
                 "t-submit": "إرسال التقييم",
-                "t-success": "شكراً! تم إرسال تقييمك بنجاح.",
-                "t-credit": "صُنع بـ <svg viewBox='0 0 24 24'><path d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z'/></svg> بواسطة <a href='https://github.com/mohammad-sherif' target='_blank'>محمد شريف</a>"
+                "t-success": "شكراً! تم إرسال تقييمك بنجاح."
+				"t-credit": "صُنع بـ <svg viewBox='0 0 24 24'><path d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z'/></svg> بواسطة <a href='https://github.com/mohammad-sherif' target='_blank'>محمد شريف</a>"
             }
         };
 
@@ -674,8 +676,9 @@
             submitBtn.style.opacity = '0.7';
             submitBtn.disabled = true;
 
+            // 1. تجميع البيانات وتأمينها من ثغرة الإكسيل
             const formData = new FormData(form);
-            const dataToSend = new URLSearchParams(); 
+            const dataToSend = new URLSearchParams(); // صيغة الداتا دي بتخلي الإرسال أسرع وأضمن
 
             for (let [key, value] of formData.entries()) {
                 if (typeof value === 'string' && (value.startsWith('=') || value.startsWith('+') || value.startsWith('-') || value.startsWith('@'))) {
@@ -685,8 +688,10 @@
                 }
             }
             
+            // 2. السحر كله هنا: بنرمي العهدة على المتصفح نفسه ونقوله ابعت الداتا دي حتى لو اليوزر قفل الصفحة
             const isQueued = navigator.sendBeacon(scriptURL, dataToSend);
 
+            // 3. نرد على العميل فوراً في كسر من الثانية
             if (isQueued) {
                 alert(dictionary[currentLang]['t-success']);
                 form.reset();
@@ -694,6 +699,7 @@
                 submitBtn.style.opacity = '1';
                 submitBtn.disabled = false;
             } else {
+                // خطة طوارئ لو متصفح العميل قديم جداً ومش بيدعم الخاصية دي
                 fetch(scriptURL, { method: 'POST', body: dataToSend })
                     .then(() => {
                         alert(dictionary[currentLang]['t-success']);
