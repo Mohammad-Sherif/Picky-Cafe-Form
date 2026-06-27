@@ -421,7 +421,8 @@
     <div class="container">
         <button class="lang-btn" id="lang-toggle" onclick="toggleLanguage()">عربي</button>
         
-        <form id="feedbackForm">
+        <iframe name="hidden_iframe" id="hidden_iframe" style="position:absolute; top:-9999px; left:-9999px; width:1px; height:1px; border:none; visibility:hidden;"></iframe>
+        <form id="feedbackForm" action="https://script.google.com/macros/s/AKfycbwaPamelAAz9DbkqsCzXsH8CtnO3rjVzsVSiBTOj0ndggajSmgOkZhCgXmfogpbNEJZ/exec" method="POST" target="hidden_iframe">
             
             <header>
                 <div style="text-align: center; margin-bottom: 10px;">
@@ -663,61 +664,64 @@
 
         const form = document.getElementById('feedbackForm');
         const submitBtn = document.getElementById('t-submit');
+        const iframe = document.getElementById('hidden_iframe');
+        let isSubmitting = false;
 
         form.addEventListener('submit', e => {
-            e.preventDefault();
+            // Prevent double-clicking
+            if (isSubmitting) {
+                e.preventDefault();
+                return;
+            }
 
-            // 1. UI Button State Management
-            const originalBtnText = submitBtn.innerText;
+            // 1. Sanitize inputs natively in the DOM BEFORE the browser sends them
+            const textInputs = form.querySelectorAll('input[type="text"], input[type="tel"], textarea');
+            textInputs.forEach(input => {
+                if (input.name === 'phone_number' && input.value.trim() !== '') {
+                    if (!input.value.startsWith("'")) {
+                        input.value = "'" + input.value; // Protect zero in Sheets
+                    }
+                } else {
+                    let val = input.value;
+                    // Prevent Excel Injection
+                    if (val.startsWith('=') || val.startsWith('+') || val.startsWith('-') || val.startsWith('@')) {
+                        input.value = ' ' + val; 
+                    }
+                }
+            });
+
+            // 2. Change UI to "Sending..."
+            isSubmitting = true;
             submitBtn.innerText = currentLang === 'en' ? 'Sending...' : 'جاري الإرسال...';
             submitBtn.style.opacity = '0.7';
-            submitBtn.style.transition = 'all 0.3s ease';
-            submitBtn.disabled = true;
-
-            // 2. Format Data
-            const formData = new FormData(form);
-            const dataToSend = new URLSearchParams();
-
-            // 3. Sanitization & Phone Format Protection
-            for (let [key, value] of formData.entries()) {
-                if (key === 'phone_number' && typeof value === 'string' && value.trim() !== '') {
-                    dataToSend.append(key, "'" + value); 
-                } else if (typeof value === 'string' && (value.startsWith('=') || value.startsWith('+') || value.startsWith('-') || value.startsWith('@'))) {
-                    dataToSend.append(key, ' ' + value); 
-                } else {
-                    dataToSend.append(key, value);
-                }
-            }
+            submitBtn.style.pointerEvents = 'none'; // Disables click safely during native submission
             
-            // 4. Guaranteed Background Delivery (Bypasses tab closure data loss)
-            // 'keepalive: true' transfers the request from the page to the browser OS,
-            // ensuring the payload is sent even if the user instantly closes the tab/browser.
-            fetch(scriptURL, {
-                method: 'POST',
-                mode: 'no-cors',
-                keepalive: true, // The Magic Bullet for background sync
-                body: dataToSend
-            }).catch(err => console.log('Fetch error ignored: ', err));
+            // 3. CRITICAL: We DO NOT call e.preventDefault() here!
+            // We let the browser natively POST the form to the hidden iframe.
+            // Safari processes native form submissions instantly with highest network priority.
+        });
 
-            // 5. Instant UI Feedback (Optimistic UI)
-            // Show success after 1.2s, giving a natural feel while the OS handles the actual background upload
-            setTimeout(() => {
+        // 4. Listen for the exact moment Google responds to the iframe
+        iframe.addEventListener('load', function() {
+            // This event only fires when the data is 100% written into Google Sheets
+            if (isSubmitting) {
                 form.reset();
                 
-                // Elegant Success State
+                // Show guaranteed success state
                 submitBtn.innerText = dictionary[currentLang]['t-success'];
                 submitBtn.style.backgroundColor = '#2ecc71'; // Success Green
                 submitBtn.style.color = '#fff';
                 submitBtn.style.opacity = '1';
                 
-                // Revert button to original state after 4 seconds
+                // Reset UI after 4 seconds
                 setTimeout(() => {
-                    submitBtn.innerText = originalBtnText;
+                    submitBtn.innerText = currentLang === 'en' ? 'Submit Feedback' : 'إرسال التقييم';
                     submitBtn.style.backgroundColor = 'var(--main-color)';
                     submitBtn.style.color = 'var(--bg-color)';
-                    submitBtn.disabled = false;
+                    submitBtn.style.pointerEvents = 'auto';
+                    isSubmitting = false;
                 }, 4000);
-            }, 1200); 
+            }
         });
     </script>
 </body>
