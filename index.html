@@ -666,30 +666,30 @@
         form.addEventListener('submit', async e => {
             e.preventDefault();
 
-            // 1. تغيير حالة الزرار
+            // 1. Update UI button state to prevent double submission
             const originalBtnText = submitBtn.innerText;
             submitBtn.innerText = currentLang === 'en' ? 'Sending...' : 'جاري الإرسال...';
             submitBtn.style.opacity = '0.7';
             submitBtn.disabled = true;
 
-            // 2. تجميع وتأمين البيانات
+            // 2. Gather data
             const formData = new FormData(form);
             const dataToSend = new URLSearchParams();
 
-            // 3. الفلترة المزدوجة (تأمين المعادلات + الحفاظ على صفر التليفون)
+            // 3. Dual Sanitization (Excel Formula Injection + Phone Number Zero Preservation)
             for (let [key, value] of formData.entries()) {
                 if (key === 'phone_number' && typeof value === 'string' && value.trim() !== '') {
-                    // إضافة علامة تنصيص مفردة لمنع الإكسيل من مسح الصفر
+                    // Prepend single quote for Google Sheets to keep the leading zero
                     dataToSend.append(key, "'" + value);
                 } else if (typeof value === 'string' && (value.startsWith('=') || value.startsWith('+') || value.startsWith('-') || value.startsWith('@'))) {
-                    // تأمين ثغرة المعادلات
+                    // Prevent execution in Google Sheets
                     dataToSend.append(key, ' ' + value); 
                 } else {
                     dataToSend.append(key, value);
                 }
             }
             
-            // 4. الإرسال الفوري (حيلة الآيفون - Hidden Iframe)
+            // 4. Hidden Iframe execution (iOS Safari workaround)
             try {
                 const iframeName = 'hidden_iframe_' + Date.now();
                 const iframe = document.createElement('iframe');
@@ -702,6 +702,7 @@
                 tempForm.action = scriptURL;
                 tempForm.target = iframeName;
 
+                // Inject sanitized data as hidden inputs
                 for (let [key, value] of dataToSend.entries()) {
                     const input = document.createElement('input');
                     input.type = 'hidden';
@@ -711,22 +712,24 @@
                 }
 
                 document.body.appendChild(tempForm);
-                tempForm.submit(); // إطلاق الداتا لجوجل
+                
+                // Submit native form to bypass tracking restrictions
+                tempForm.submit();
 
-                // الانتظار ثانية ونصف لضمان الإرسال قبل إظهار رسالة النجاح
+                // Increased delay to 2000ms for slower mobile networks before UI alert
                 setTimeout(() => {
                     alert(dictionary[currentLang]['t-success']);
                     form.reset();
                     
-                    // تنظيف الصفحة من الكود الوهمي
+                    // Clean up DOM elements
                     document.body.removeChild(tempForm);
                     setTimeout(() => document.body.removeChild(iframe), 5000);
                     
-                    // إرجاع الزرار لشكله الطبيعي
+                    // Restore UI button state
                     submitBtn.innerText = originalBtnText;
                     submitBtn.style.opacity = '1';
                     submitBtn.disabled = false;
-                }, 1500);
+                }, 2000); 
 
             } catch (error) {
                 console.error('Submission Error:', error);
