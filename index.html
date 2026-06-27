@@ -690,21 +690,21 @@
             }
             
             try {
-                // 3. الانتظار الإجباري (await): الكود هيقف هنا لحد ما جوجل يستلم الداتا
+                // Using no-cors mode to bypass mobile browser security delays and redirects
                 await fetch(scriptURL, { 
                     method: 'POST', 
-                    body: dataToSend
+                    body: dataToSend,
+                    mode: 'no-cors'
                 });
 
-                // 4. السطر ده مش هيتنفذ إلا لما اللي فوق ينجح 100%
+                // Execute success sequence immediately after the request is fired
                 alert(dictionary[currentLang]['t-success']);
                 form.reset();
             } catch (error) {
-                // لو النت فصل أو في مشكلة
                 console.error('Submission Error:', error);
                 alert('Connection Error! Please check your internet connection.');
             } finally {
-                // 5. إرجاع الزرار لأصله في كل الحالات
+                // Reset button state
                 submitBtn.innerText = originalBtnText;
                 submitBtn.style.opacity = '1';
                 submitBtn.disabled = false;
