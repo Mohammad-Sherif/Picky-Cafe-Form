@@ -690,21 +690,50 @@
             }
             
             try {
-                // Using no-cors mode to bypass mobile browser security delays and redirects
-                await fetch(scriptURL, { 
-                    method: 'POST', 
-                    body: dataToSend,
-                    mode: 'no-cors'
-                });
+                // The ultimate workaround for iOS Safari strict tracking prevention: Hidden Iframe
+                const iframeName = 'hidden_iframe_' + Date.now();
+                const iframe = document.createElement('iframe');
+                iframe.name = iframeName;
+                iframe.style.display = 'none';
+                document.body.appendChild(iframe);
 
-                // Execute success sequence immediately after the request is fired
-                alert(dictionary[currentLang]['t-success']);
-                form.reset();
+                const tempForm = document.createElement('form');
+                tempForm.method = 'POST';
+                tempForm.action = scriptURL;
+                tempForm.target = iframeName; // Submit payload into the invisible iframe
+
+                // Inject sanitized data
+                for (let [key, value] of dataToSend.entries()) {
+                    const input = document.createElement('input');
+                    input.type = 'hidden';
+                    input.name = key;
+                    input.value = value;
+                    tempForm.appendChild(input);
+                }
+
+                document.body.appendChild(tempForm);
+                
+                // Native form submission (Bypasses Safari's fetch queuing)
+                tempForm.submit();
+
+                // 1.5 seconds delay to guarantee network packet dispatch before UI alert
+                setTimeout(() => {
+                    alert(dictionary[currentLang]['t-success']);
+                    form.reset();
+                    
+                    // Clean up DOM
+                    document.body.removeChild(tempForm);
+                    setTimeout(() => document.body.removeChild(iframe), 5000);
+                    
+                    // Reset button state
+                    submitBtn.innerText = originalBtnText;
+                    submitBtn.style.opacity = '1';
+                    submitBtn.disabled = false;
+                }, 1500);
+
             } catch (error) {
                 console.error('Submission Error:', error);
-                alert('Connection Error! Please check your internet connection.');
-            } finally {
-                // Reset button state
+                alert('Connection Error! Please try again.');
                 submitBtn.innerText = originalBtnText;
                 submitBtn.style.opacity = '1';
                 submitBtn.disabled = false;
