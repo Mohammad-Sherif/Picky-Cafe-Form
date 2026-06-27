@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Picky Cafe - Feedback</title>
-    <!-- استدعاء الخطوط (تم تغيير خط عربي إلى Tajawal للأناقة) -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Playfair+Display:ital,wght@0,700;1,400&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -22,10 +21,9 @@
             display: flex;
             justify-content: center;
             transition: all 0.3s ease;
-            line-height: 1.6; /* تفتيح المسافات بين السطور عموماً */
+            line-height: 1.6;
         }
 
-        /* تنسيقات العربي */
         body.rtl {
             direction: rtl;
             text-align: right;
@@ -55,7 +53,7 @@
             max-width: 800px;
             width: 100%;
             background-color: var(--bg-color);
-            padding: 25px; /* تزويد مساحة التنفس داخل الإطار */
+            padding: 25px; 
             box-sizing: border-box;
             border: 2px solid var(--main-color);
             border-radius: 10px;
@@ -94,7 +92,7 @@
 
         header {
             text-align: center;
-            margin-bottom: 40px; /* تزويد المسافة تحت الهيدر */
+            margin-bottom: 40px;
             margin-top: 20px;
         }
 
@@ -118,7 +116,7 @@
             font-size: 1rem;
             margin: 10px 0 20px 0;
             font-weight: 600;
-            line-height: 1.8; /* مسافة مريحة للعين في العنوان الفرعي */
+            line-height: 1.8;
         }
 
         .heart-divider {
@@ -157,7 +155,7 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 15px 10px;
-            margin-bottom: 35px; /* إبعاد الأقسام عن بعضها */
+            margin-bottom: 35px; 
         }
 
         .checkbox-item {
@@ -218,7 +216,6 @@
             outline: none;
         }
 
-        /* الجدول الأساسي للكمبيوتر */
         .table-responsive {
             width: 100%;
             margin-bottom: 40px;
@@ -296,6 +293,31 @@
             margin-top: 50px;
             border-top: 1px dashed var(--main-color);
             padding-top: 30px;
+            position: relative;
+        }
+
+        /* ستايل لينك إنستجرام */
+        .ig-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            color: var(--main-color);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: opacity 0.3s;
+            margin-bottom: 10px;
+        }
+
+        .ig-link:hover {
+            opacity: 0.7;
+        }
+
+        .ig-link svg {
+            width: 24px;
+            height: 24px;
+            fill: var(--main-color);
         }
 
         .footer-script {
@@ -328,11 +350,30 @@
             cursor: not-allowed;
         }
 
+        /* ستايل حقوق التطوير (بصمتك) */
+        .developer-credit {
+            margin-top: 35px;
+            font-size: 0.75rem;
+            opacity: 0.6;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        .developer-credit a {
+            color: var(--main-color);
+            text-decoration: none;
+            font-weight: 700;
+            transition: opacity 0.3s;
+        }
+
+        .developer-credit a:hover {
+            opacity: 0.6;
+        }
+
         .mobile-break {
             display: none;
         }
 
-        /* تحسينات الموبايل الجوهرية لضبط النجوم والمسافات */
         @media (max-width: 600px) {
             body { padding: 8px; }
             .container { padding: 15px; }
@@ -341,7 +382,7 @@
             h2#t-main-title { font-size: 1.8rem; }
             .subtitle { font-size: 0.9rem; }
             
-            .mobile-break { display: block; } /* كسر السطر في الجملة زي ما طلبت */
+            .mobile-break { display: block; } 
             
             .checkbox-group {
                 grid-template-columns: 1fr;
@@ -355,23 +396,22 @@
             body.rtl .input-group label { margin-left: 0; }
             .input-line { width: 100%; }
             
-            /* تظبيط الجدول عشان ما يعملش سكرول نهائي */
             .table-responsive {
                 overflow-x: hidden; 
             }
             .rating-table th:first-child, .rating-table td:first-child {
-                width: 32%; /* تقليل مساحة الكلمة شوية عشان النجوم تاخد راحتها */
+                width: 32%; 
                 font-size: 0.8rem;
             }
             .rating-table th:not(:first-child), .rating-table td:not(:first-child) {
                 width: 13.6%; 
             }
             .rating-table th {
-                font-size: 0.65rem; /* تصغير العناوين (ممتاز، جيد) عشان تركب صح */
+                font-size: 0.65rem; 
                 padding-bottom: 8px;
             }
             .star-radio::before {
-                font-size: 1.1rem; /* تصغير النجمة للموبايل عشان ما تكبرش الخلية */
+                font-size: 1.1rem; 
             }
             .rating-table td {
                 padding: 4px 0;
@@ -384,7 +424,6 @@
 <body>
 
     <div class="container">
-        <!-- زرار اللغة -->
         <button class="lang-btn" id="lang-toggle" onclick="toggleLanguage()">عربي</button>
         
         <form id="feedbackForm">
@@ -532,10 +571,20 @@
             <textarea name="feedback_notes" class="lined-textarea"></textarea>
 
             <footer>
-                <p id="t-footer-top">Instagram: @PICKYOFFICIAL_1</p>
+                <a href="https://www.instagram.com/pickyofficial_1?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" class="ig-link">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+                    </svg>
+                    <span>@PICKYOFFICIAL_1</span>
+                </a>
+
                 <div class="footer-script">Sip. Smile. Repeat.</div>
                 <p class="footer-tags" style="font-weight: 600; font-size: 0.9rem; letter-spacing: 2px;">HOT &bull; ICE &bull; FRESH &bull; BOBA</p>
                 <button type="submit" class="submit-btn" id="t-submit">Submit Feedback</button>
+
+                <div class="developer-credit" id="t-credit">
+                    Developed by <a href="https://github.com/mohammad-sherif" target="_blank">Mohammad Sherif</a>
+                </div>
             </footer>
         </form>
     </div>
@@ -561,9 +610,9 @@
                 "t-eval-1": "Taste / Flavor", "t-eval-2": "Drink Quality", "t-eval-3": "Freshness of Ingredients", "t-eval-4": "Presentation",
                 "t-eval-5": "Packaging", "t-eval-6": "Staff Friendliness", "t-eval-7": "Speed of Service", "t-eval-8": "Overall Experience",
                 "t-sec5": "5. What Did You Enjoy Most About Your Drink?",
-                "t-footer-top": "Instagram: @PICKYOFFICIAL_1",
                 "t-submit": "Submit Feedback",
-                "t-success": "Thank you! Your feedback has been submitted successfully."
+                "t-success": "Thank you! Your feedback has been submitted successfully.",
+                "t-credit": "Developed by <a href='https://github.com/mohammad-sherif' target='_blank'>Mohammad Sherif</a>"
             },
             ar: {
                 "lang-toggle": "English",
@@ -582,9 +631,9 @@
                 "t-eval-1": "الطعم / النكهة", "t-eval-2": "جودة المشروب", "t-eval-3": "طازجة المكونات", 
                 "t-eval-4": "شكل وتقديم المشروب", "t-eval-5": "التغليف", "t-eval-6": "ودّة الموظفين", "t-eval-7": "سرعة الخدمة", "t-eval-8": "تجربتك بشكل عام",
                 "t-sec5": "إيه أكتر حاجة عجبتك في مشروبك 5",
-                "t-footer-top": "امسح الكود وتابعنا!",
                 "t-submit": "إرسال التقييم",
-                "t-success": "شكراً! تم إرسال تقييمك بنجاح."
+                "t-success": "شكراً! تم إرسال تقييمك بنجاح.",
+                "t-credit": "تم التطوير بواسطة <a href='https://github.com/mohammad-sherif' target='_blank'>محمد شريف</a>"
             }
         };
 
@@ -618,9 +667,8 @@
             submitBtn.style.opacity = '0.7';
             submitBtn.disabled = true;
 
-            // 1. تجميع البيانات وتأمينها من ثغرة الإكسيل
             const formData = new FormData(form);
-            const dataToSend = new URLSearchParams(); // صيغة الداتا دي بتخلي الإرسال أسرع وأضمن
+            const dataToSend = new URLSearchParams(); 
 
             for (let [key, value] of formData.entries()) {
                 if (typeof value === 'string' && (value.startsWith('=') || value.startsWith('+') || value.startsWith('-') || value.startsWith('@'))) {
@@ -630,10 +678,8 @@
                 }
             }
             
-            // 2. السحر كله هنا: بنرمي العهدة على المتصفح نفسه ونقوله ابعت الداتا دي حتى لو اليوزر قفل الصفحة
             const isQueued = navigator.sendBeacon(scriptURL, dataToSend);
 
-            // 3. نرد على العميل فوراً في كسر من الثانية
             if (isQueued) {
                 alert(dictionary[currentLang]['t-success']);
                 form.reset();
@@ -641,7 +687,6 @@
                 submitBtn.style.opacity = '1';
                 submitBtn.disabled = false;
             } else {
-                // خطة طوارئ لو متصفح العميل قديم جداً ومش بيدعم الخاصية دي
                 fetch(scriptURL, { method: 'POST', body: dataToSend })
                     .then(() => {
                         alert(dictionary[currentLang]['t-success']);
