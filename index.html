@@ -676,8 +676,12 @@
             const formData = new FormData(form);
             const dataToSend = new URLSearchParams();
 
+            f// Sanitize data and force phone numbers to be stored as text
             for (let [key, value] of formData.entries()) {
-                if (typeof value === 'string' && (value.startsWith('=') || value.startsWith('+') || value.startsWith('-') || value.startsWith('@'))) {
+                if (key === 'phone_number' && value.trim() !== '') {
+                    // Prepend single quote to prevent Google Sheets from dropping the leading zero
+                    dataToSend.append(key, "'" + value);
+                } else if (typeof value === 'string' && (value.startsWith('=') || value.startsWith('+') || value.startsWith('-') || value.startsWith('@'))) {
                     dataToSend.append(key, ' ' + value); 
                 } else {
                     dataToSend.append(key, value);
