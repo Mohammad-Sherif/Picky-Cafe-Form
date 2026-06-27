@@ -299,6 +299,11 @@
             opacity: 0.9;
         }
 
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
         @media (max-width: 600px) {
             .rating-table th {
                 font-size: 0.8rem;
@@ -312,12 +317,12 @@
         <!-- زر التبديل -->
         <button class="lang-btn" id="lang-toggle" onclick="toggleLanguage()">عربي</button>
         
-        <form action="https://script.google.com/macros/s/AKfycbwG-QI3PLWWv55VXkMFZCIAae0_qE_WrHaA_SBQ5AMGJaMJZcPaD1inWV_sAOJ9ya3k/exec" method="POST">
+        <form id="feedbackForm">
             
             <header>
                 <div class="logo-placeholder">
-    <img src="logo.png" alt="Picky Logo" style="max-width: 100%; border-radius: 50%;">
-</div>
+                    <img src="logo.png" alt="Picky Logo" style="max-width: 100%; border-radius: 50%;">
+                </div>
                 <h1>Picky</h1>
                 <p id="t-slogan" style="font-weight: 600;">Too Picky? Perfect</p>
                 <h2 id="t-main-title">We Value Your Feedback!</h2>
@@ -454,7 +459,10 @@
     </div>
 
     <script>
-        // قاموس اللغتين - جاهز على المفتاح
+        // اللينك بتاعك أهو متظبط
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbwG-QI3PLWWv55VXkMFZCIAae0_qE_WrHaA_SBQ5AMGJaMJZcPaD1inWV_sAOJ9ya3k/exec';
+
+        // قاموس اللغتين
         const dictionary = {
             en: {
                 "t-slogan": "Too Picky? Perfect",
@@ -473,7 +481,8 @@
                 "t-eval-5": "Packaging", "t-eval-6": "Staff Friendliness", "t-eval-7": "Speed of Service", "t-eval-8": "Overall Experience",
                 "t-sec5": "5. What Did You Enjoy Most About Your Drink?",
                 "t-footer-top": "Instagram: @PICKYOFFICIAL_1",
-                "t-submit": "Submit Feedback"
+                "t-submit": "Submit Feedback",
+                "t-success": "Thank you! Your feedback has been submitted successfully."
             },
             ar: {
                 "t-slogan": "Too Picky? Perfect",
@@ -492,7 +501,8 @@
                 "t-eval-4": "شكل وتقديم المشروب", "t-eval-5": "التغليف", "t-eval-6": "ودّة الموظفين", "t-eval-7": "سرعة الخدمة", "t-eval-8": "تجربتك بشكل عام",
                 "t-sec5": "إيه أكتر حاجة عجبتك في مشروبك 5",
                 "t-footer-top": "امسح الكود وتابعنا!",
-                "t-submit": "إرسال التقييم"
+                "t-submit": "إرسال التقييم",
+                "t-success": "شكراً! تم إرسال تقييمك بنجاح."
             }
         };
 
@@ -501,7 +511,6 @@
         function toggleLanguage() {
             currentLang = currentLang === 'en' ? 'ar' : 'en';
             
-            // تغيير الاتجاه (RTL/LTR)
             if (currentLang === 'ar') {
                 document.body.classList.add('rtl');
                 document.getElementById('lang-toggle').innerText = 'English';
@@ -510,7 +519,6 @@
                 document.getElementById('lang-toggle').innerText = 'عربي';
             }
 
-            // تحديث النصوص
             for (const key in dictionary[currentLang]) {
                 const element = document.getElementById(key);
                 if (element) {
@@ -518,6 +526,33 @@
                 }
             }
         }
+
+        // لوجيك الإرسال في الخلفية
+        const form = document.getElementById('feedbackForm');
+        const submitBtn = document.getElementById('t-submit');
+
+        form.addEventListener('submit', e => {
+            e.preventDefault(); // بيمنع الصفحة إنها تعمل ريفريش أو تروح للينك الإيرور
+            
+            const originalBtnText = submitBtn.innerText;
+            submitBtn.innerText = currentLang === 'en' ? 'Sending...' : 'جاري الإرسال...';
+            submitBtn.disabled = true; // بنقفل الزرار عشان الزبون ميدوسش مرتين
+
+            fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+                .then(response => {
+                    // بيطلع رسالة الشكر، وبيفضي الفورم، وبيرجع الزرار لشكله الطبيعي
+                    alert(dictionary[currentLang]['t-success']);
+                    form.reset();
+                    submitBtn.innerText = originalBtnText;
+                    submitBtn.disabled = false;
+                })
+                .catch(error => {
+                    console.error('Error!', error.message);
+                    alert('Connection Error! Please try again.');
+                    submitBtn.innerText = originalBtnText;
+                    submitBtn.disabled = false;
+                });
+        });
     </script>
 </body>
 </html>
