@@ -666,10 +666,11 @@
         form.addEventListener('submit', e => {
             e.preventDefault();
 
-            // 1. UI Button State
+            // 1. UI Button State Management
             const originalBtnText = submitBtn.innerText;
             submitBtn.innerText = currentLang === 'en' ? 'Sending...' : 'جاري الإرسال...';
             submitBtn.style.opacity = '0.7';
+            submitBtn.style.transition = 'all 0.3s ease';
             submitBtn.disabled = true;
 
             // 2. Format Data
@@ -688,16 +689,20 @@
             }
             
             try {
-                // 4. iOS Safari Safe Iframe Form Submission
+                // 4. iOS Safari Bulletproof Iframe Submission
                 const iframeName = 'hidden_iframe_' + Date.now();
                 const iframe = document.createElement('iframe');
                 iframe.name = iframeName;
+                iframe.src = 'about:blank'; // Crucial for Safari to initialize the browsing context
                 
-                // Bulletproof hiding: Does not use display:none to bypass Safari throttling
+                // Microscopic sizing instead of display:none to bypass aggressive WebKit optimization
                 iframe.style.position = 'absolute';
-                iframe.style.width = '0';
-                iframe.style.height = '0';
-                iframe.style.border = '0';
+                iframe.style.top = '-9999px';
+                iframe.style.left = '-9999px';
+                iframe.style.width = '10px';
+                iframe.style.height = '10px';
+                iframe.style.opacity = '0.01';
+                iframe.style.border = 'none';
                 
                 document.body.appendChild(iframe);
 
@@ -716,31 +721,52 @@
 
                 document.body.appendChild(tempForm);
                 
-                // Submit Form
-                tempForm.submit();
-
-                // Wait 2 seconds before resetting to ensure Safari has processed the request
+                // CRITICAL SAFARI FIX: Wait 100ms for iframe to fully register in the DOM before firing
                 setTimeout(() => {
-                    alert(dictionary[currentLang]['t-success']);
+                    tempForm.submit();
+                }, 100);
+
+                // UI Success update (Replaced blocking alert() with elegant inline UI state)
+                setTimeout(() => {
                     form.reset();
                     
-                    submitBtn.innerText = originalBtnText;
+                    // Minimalist success state
+                    submitBtn.innerText = dictionary[currentLang]['t-success'];
+                    submitBtn.style.backgroundColor = '#2ecc71'; // Success Green
+                    submitBtn.style.color = '#fff';
                     submitBtn.style.opacity = '1';
-                    submitBtn.disabled = false;
+                    
+                    // Revert button to original state after 4.5 seconds
+                    setTimeout(() => {
+                        submitBtn.innerText = originalBtnText;
+                        submitBtn.style.backgroundColor = 'var(--main-color)';
+                        submitBtn.style.color = 'var(--bg-color)';
+                        submitBtn.disabled = false;
+                    }, 4500);
+                    
                 }, 2000);
 
-                // Clean DOM strictly after 8 seconds (Extremely safe buffer)
+                // Clean DOM strictly after 10 seconds (Extremely safe buffer)
                 setTimeout(() => {
                     if (tempForm.parentNode) document.body.removeChild(tempForm);
                     if (iframe.parentNode) document.body.removeChild(iframe);
-                }, 8000);
+                }, 10000);
 
             } catch (error) {
                 console.error('Submission Error:', error);
-                alert('Connection Error! Please try again.');
-                submitBtn.innerText = originalBtnText;
-                submitBtn.style.opacity = '1';
-                submitBtn.disabled = false;
+                
+                // Minimalist error state
+                submitBtn.innerText = 'Error! Try Again';
+                submitBtn.style.backgroundColor = '#e74c3c'; // Error Red
+                submitBtn.style.color = '#fff';
+                
+                setTimeout(() => {
+                    submitBtn.innerText = originalBtnText;
+                    submitBtn.style.backgroundColor = 'var(--main-color)';
+                    submitBtn.style.color = 'var(--bg-color)';
+                    submitBtn.style.opacity = '1';
+                    submitBtn.disabled = false;
+                }, 3000);
             }
         });
     </script>
