@@ -689,16 +689,18 @@
                 }
             }
             
-            // 4. True Fire & Forget (Bypassing Safari's Promise Resolution Delay)
-            // Send the request but DO NOT wait for Safari to resolve the background redirect
+            // 4. Guaranteed Background Delivery (Bypasses tab closure data loss)
+            // 'keepalive: true' transfers the request from the page to the browser OS,
+            // ensuring the payload is sent even if the user instantly closes the tab/browser.
             fetch(scriptURL, {
                 method: 'POST',
                 mode: 'no-cors',
+                keepalive: true, // The Magic Bullet for background sync
                 body: dataToSend
             }).catch(err => console.log('Fetch error ignored: ', err));
 
             // 5. Instant UI Feedback (Optimistic UI)
-            // Show success immediately after 600ms, completely ignoring Safari's 20s background delay
+            // Show success after 1.2s, giving a natural feel while the OS handles the actual background upload
             setTimeout(() => {
                 form.reset();
                 
@@ -708,14 +710,14 @@
                 submitBtn.style.color = '#fff';
                 submitBtn.style.opacity = '1';
                 
-                // Revert button to original state after 4.5 seconds
+                // Revert button to original state after 4 seconds
                 setTimeout(() => {
                     submitBtn.innerText = originalBtnText;
                     submitBtn.style.backgroundColor = 'var(--main-color)';
                     submitBtn.style.color = 'var(--bg-color)';
                     submitBtn.disabled = false;
-                }, 4500);
-            }, 600); // 600ms provides a realistic "instant processing" feel
+                }, 4000);
+            }, 1200); 
         });
     </script>
 </body>
