@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Picky Cafe - Feedback</title>
-    <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Playfair+Display:ital,wght@0,700;1,400&family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -175,6 +174,7 @@
             border-radius: 3px;
             cursor: pointer;
             position: relative;
+            flex-shrink: 0;
         }
 
         input[type="checkbox"]:checked::after {
@@ -216,10 +216,18 @@
             outline: none;
         }
 
+        /* Table Responsive Wrapper */
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            margin-bottom: 30px;
+        }
+
         .rating-table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 30px;
+            min-width: 480px; /* Forces table to maintain shape on mobile */
         }
 
         .rating-table th {
@@ -310,9 +318,45 @@
             cursor: not-allowed;
         }
 
+        /* Mobile Optimization overrides */
         @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+            .container {
+                padding: 15px;
+            }
+            .container::before {
+                top: 4px; left: 4px; right: 4px; bottom: 4px;
+            }
+            h2#t-main-title {
+                font-size: 1.8rem;
+            }
+            .checkbox-group {
+                grid-template-columns: 1fr; /* Stack checkboxes */
+                gap: 10px;
+            }
+            .input-group {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .input-group label {
+                margin-bottom: 5px;
+            }
+            body.rtl .input-group label {
+                margin-left: 0;
+            }
+            .input-line {
+                width: 100%;
+            }
+            .star-radio::before {
+                font-size: 1.3rem; /* Slightly smaller stars */
+            }
             .rating-table th {
                 font-size: 0.8rem;
+            }
+            .submit-btn {
+                width: 100%; /* Full width button on mobile */
             }
         }
     </style>
@@ -320,7 +364,6 @@
 <body>
 
     <div class="container">
-        <!-- Language Toggle -->
         <button class="lang-btn" id="lang-toggle" onclick="toggleLanguage()">عربي</button>
         
         <form id="feedbackForm">
@@ -349,9 +392,9 @@
                 <label class="checkbox-item"><input type="checkbox" name="source" value="Ordered Before"> <span id="t-ordered">Ordered Before</span></label>
                 <label class="checkbox-item"><input type="checkbox" name="source" value="Facebook"> <span id="t-fb">Facebook</span></label>
                 <label class="checkbox-item"><input type="checkbox" name="source" value="Friend/Family"> <span id="t-friend">Friend / Family</span></label>
-                <label class="checkbox-item" style="grid-column: span 2;">
+                <label class="checkbox-item" style="grid-column: 1 / -1;">
                     <input type="checkbox" name="source" value="Other"> <span id="t-other">Other:</span>
-                    <input type="text" class="input-line" name="source_other" style="width: 150px;">
+                    <input type="text" class="input-line" name="source_other" style="width: 150px; margin-left: 10px;">
                 </label>
             </div>
 
@@ -379,84 +422,86 @@
             </div>
 
             <div class="section-title" id="t-sec4">4. Rate Your Experience</div>
-            <table class="rating-table">
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th id="t-rate-exc">Excellent</th>
-                        <th id="t-rate-good">Good</th>
-                        <th id="t-rate-avg">Average</th>
-                        <th id="t-rate-fair">Fair</th>
-                        <th id="t-rate-poor">Poor</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td id="t-eval-1">Taste / Flavor</td>
-                        <td><input type="radio" name="rate_taste" value="Excellent" class="star-radio" required></td>
-                        <td><input type="radio" name="rate_taste" value="Good" class="star-radio"></td>
-                        <td><input type="radio" name="rate_taste" value="Average" class="star-radio"></td>
-                        <td><input type="radio" name="rate_taste" value="Fair" class="star-radio"></td>
-                        <td><input type="radio" name="rate_taste" value="Poor" class="star-radio"></td>
-                    </tr>
-                    <tr>
-                        <td id="t-eval-2">Drink Quality</td>
-                        <td><input type="radio" name="rate_quality" value="Excellent" class="star-radio" required></td>
-                        <td><input type="radio" name="rate_quality" value="Good" class="star-radio"></td>
-                        <td><input type="radio" name="rate_quality" value="Average" class="star-radio"></td>
-                        <td><input type="radio" name="rate_quality" value="Fair" class="star-radio"></td>
-                        <td><input type="radio" name="rate_quality" value="Poor" class="star-radio"></td>
-                    </tr>
-                    <tr>
-                        <td id="t-eval-3">Freshness of Ingredients</td>
-                        <td><input type="radio" name="rate_freshness" value="Excellent" class="star-radio" required></td>
-                        <td><input type="radio" name="rate_freshness" value="Good" class="star-radio"></td>
-                        <td><input type="radio" name="rate_freshness" value="Average" class="star-radio"></td>
-                        <td><input type="radio" name="rate_freshness" value="Fair" class="star-radio"></td>
-                        <td><input type="radio" name="rate_freshness" value="Poor" class="star-radio"></td>
-                    </tr>
-                    <tr>
-                        <td id="t-eval-4">Presentation</td>
-                        <td><input type="radio" name="rate_presentation" value="Excellent" class="star-radio" required></td>
-                        <td><input type="radio" name="rate_presentation" value="Good" class="star-radio"></td>
-                        <td><input type="radio" name="rate_presentation" value="Average" class="star-radio"></td>
-                        <td><input type="radio" name="rate_presentation" value="Fair" class="star-radio"></td>
-                        <td><input type="radio" name="rate_presentation" value="Poor" class="star-radio"></td>
-                    </tr>
-                    <tr>
-                        <td id="t-eval-5">Packaging</td>
-                        <td><input type="radio" name="rate_packaging" value="Excellent" class="star-radio" required></td>
-                        <td><input type="radio" name="rate_packaging" value="Good" class="star-radio"></td>
-                        <td><input type="radio" name="rate_packaging" value="Average" class="star-radio"></td>
-                        <td><input type="radio" name="rate_packaging" value="Fair" class="star-radio"></td>
-                        <td><input type="radio" name="rate_packaging" value="Poor" class="star-radio"></td>
-                    </tr>
-                    <tr>
-                        <td id="t-eval-6">Staff Friendliness</td>
-                        <td><input type="radio" name="rate_staff" value="Excellent" class="star-radio" required></td>
-                        <td><input type="radio" name="rate_staff" value="Good" class="star-radio"></td>
-                        <td><input type="radio" name="rate_staff" value="Average" class="star-radio"></td>
-                        <td><input type="radio" name="rate_staff" value="Fair" class="star-radio"></td>
-                        <td><input type="radio" name="rate_staff" value="Poor" class="star-radio"></td>
-                    </tr>
-                    <tr>
-                        <td id="t-eval-7">Speed of Service</td>
-                        <td><input type="radio" name="rate_speed" value="Excellent" class="star-radio" required></td>
-                        <td><input type="radio" name="rate_speed" value="Good" class="star-radio"></td>
-                        <td><input type="radio" name="rate_speed" value="Average" class="star-radio"></td>
-                        <td><input type="radio" name="rate_speed" value="Fair" class="star-radio"></td>
-                        <td><input type="radio" name="rate_speed" value="Poor" class="star-radio"></td>
-                    </tr>
-                    <tr>
-                        <td id="t-eval-8">Overall Experience</td>
-                        <td><input type="radio" name="rate_overall" value="Excellent" class="star-radio" required></td>
-                        <td><input type="radio" name="rate_overall" value="Good" class="star-radio"></td>
-                        <td><input type="radio" name="rate_overall" value="Average" class="star-radio"></td>
-                        <td><input type="radio" name="rate_overall" value="Fair" class="star-radio"></td>
-                        <td><input type="radio" name="rate_overall" value="Poor" class="star-radio"></td>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="table-responsive">
+                <table class="rating-table">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th id="t-rate-exc">Excellent</th>
+                            <th id="t-rate-good">Good</th>
+                            <th id="t-rate-avg">Average</th>
+                            <th id="t-rate-fair">Fair</th>
+                            <th id="t-rate-poor">Poor</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td id="t-eval-1">Taste / Flavor</td>
+                            <td><input type="radio" name="rate_taste" value="Excellent" class="star-radio" required></td>
+                            <td><input type="radio" name="rate_taste" value="Good" class="star-radio"></td>
+                            <td><input type="radio" name="rate_taste" value="Average" class="star-radio"></td>
+                            <td><input type="radio" name="rate_taste" value="Fair" class="star-radio"></td>
+                            <td><input type="radio" name="rate_taste" value="Poor" class="star-radio"></td>
+                        </tr>
+                        <tr>
+                            <td id="t-eval-2">Drink Quality</td>
+                            <td><input type="radio" name="rate_quality" value="Excellent" class="star-radio" required></td>
+                            <td><input type="radio" name="rate_quality" value="Good" class="star-radio"></td>
+                            <td><input type="radio" name="rate_quality" value="Average" class="star-radio"></td>
+                            <td><input type="radio" name="rate_quality" value="Fair" class="star-radio"></td>
+                            <td><input type="radio" name="rate_quality" value="Poor" class="star-radio"></td>
+                        </tr>
+                        <tr>
+                            <td id="t-eval-3">Freshness of Ingredients</td>
+                            <td><input type="radio" name="rate_freshness" value="Excellent" class="star-radio" required></td>
+                            <td><input type="radio" name="rate_freshness" value="Good" class="star-radio"></td>
+                            <td><input type="radio" name="rate_freshness" value="Average" class="star-radio"></td>
+                            <td><input type="radio" name="rate_freshness" value="Fair" class="star-radio"></td>
+                            <td><input type="radio" name="rate_freshness" value="Poor" class="star-radio"></td>
+                        </tr>
+                        <tr>
+                            <td id="t-eval-4">Presentation</td>
+                            <td><input type="radio" name="rate_presentation" value="Excellent" class="star-radio" required></td>
+                            <td><input type="radio" name="rate_presentation" value="Good" class="star-radio"></td>
+                            <td><input type="radio" name="rate_presentation" value="Average" class="star-radio"></td>
+                            <td><input type="radio" name="rate_presentation" value="Fair" class="star-radio"></td>
+                            <td><input type="radio" name="rate_presentation" value="Poor" class="star-radio"></td>
+                        </tr>
+                        <tr>
+                            <td id="t-eval-5">Packaging</td>
+                            <td><input type="radio" name="rate_packaging" value="Excellent" class="star-radio" required></td>
+                            <td><input type="radio" name="rate_packaging" value="Good" class="star-radio"></td>
+                            <td><input type="radio" name="rate_packaging" value="Average" class="star-radio"></td>
+                            <td><input type="radio" name="rate_packaging" value="Fair" class="star-radio"></td>
+                            <td><input type="radio" name="rate_packaging" value="Poor" class="star-radio"></td>
+                        </tr>
+                        <tr>
+                            <td id="t-eval-6">Staff Friendliness</td>
+                            <td><input type="radio" name="rate_staff" value="Excellent" class="star-radio" required></td>
+                            <td><input type="radio" name="rate_staff" value="Good" class="star-radio"></td>
+                            <td><input type="radio" name="rate_staff" value="Average" class="star-radio"></td>
+                            <td><input type="radio" name="rate_staff" value="Fair" class="star-radio"></td>
+                            <td><input type="radio" name="rate_staff" value="Poor" class="star-radio"></td>
+                        </tr>
+                        <tr>
+                            <td id="t-eval-7">Speed of Service</td>
+                            <td><input type="radio" name="rate_speed" value="Excellent" class="star-radio" required></td>
+                            <td><input type="radio" name="rate_speed" value="Good" class="star-radio"></td>
+                            <td><input type="radio" name="rate_speed" value="Average" class="star-radio"></td>
+                            <td><input type="radio" name="rate_speed" value="Fair" class="star-radio"></td>
+                            <td><input type="radio" name="rate_speed" value="Poor" class="star-radio"></td>
+                        </tr>
+                        <tr>
+                            <td id="t-eval-8">Overall Experience</td>
+                            <td><input type="radio" name="rate_overall" value="Excellent" class="star-radio" required></td>
+                            <td><input type="radio" name="rate_overall" value="Good" class="star-radio"></td>
+                            <td><input type="radio" name="rate_overall" value="Average" class="star-radio"></td>
+                            <td><input type="radio" name="rate_overall" value="Fair" class="star-radio"></td>
+                            <td><input type="radio" name="rate_overall" value="Poor" class="star-radio"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
 
             <div class="section-title" id="t-sec5">5. What Did You Enjoy Most About Your Drink?</div>
             <textarea name="feedback_notes" class="lined-textarea"></textarea>
