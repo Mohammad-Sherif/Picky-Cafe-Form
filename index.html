@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Picky Cafe - Feedback</title>
+    <!-- استدعاء الخطوط (تم تغيير خط عربي إلى Tajawal للأناقة) -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Playfair+Display:ital,wght@0,700;1,400&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -21,8 +22,10 @@
             display: flex;
             justify-content: center;
             transition: all 0.3s ease;
+            line-height: 1.6; /* تفتيح المسافات بين السطور عموماً */
         }
 
+        /* تنسيقات العربي */
         body.rtl {
             direction: rtl;
             text-align: right;
@@ -52,7 +55,7 @@
             max-width: 800px;
             width: 100%;
             background-color: var(--bg-color);
-            padding: 20px;
+            padding: 25px; /* تزويد مساحة التنفس داخل الإطار */
             box-sizing: border-box;
             border: 2px solid var(--main-color);
             border-radius: 10px;
@@ -91,37 +94,38 @@
 
         header {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 40px; /* تزويد المسافة تحت الهيدر */
             margin-top: 20px;
         }
 
         #t-slogan {
-            margin: 5px 0 0 0;
-            font-size: 0.9rem;
+            margin: 10px 0 0 0;
+            font-size: 0.95rem;
             font-weight: 700;
         }
 
         h2#t-main-title {
             font-family: 'Playfair Display', serif;
-            margin: 5px 0;
-            font-size: 2.2rem;
+            margin: 10px 0;
+            font-size: 2.4rem;
         }
 
         body.rtl h2#t-main-title {
-            font-weight: 700;
+            font-weight: 800;
         }
 
         .subtitle {
-            font-size: 0.9rem;
-            margin: 5px 0 15px 0;
+            font-size: 1rem;
+            margin: 10px 0 20px 0;
             font-weight: 600;
+            line-height: 1.8; /* مسافة مريحة للعين في العنوان الفرعي */
         }
 
         .heart-divider {
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 10px 0 25px 0;
+            margin: 15px 0 30px 0;
             color: var(--main-color);
         }
 
@@ -142,10 +146,10 @@
             background-color: var(--main-color);
             color: var(--bg-color);
             display: inline-block;
-            padding: 5px 20px;
+            padding: 6px 20px;
             border-radius: 20px;
-            font-weight: 600;
-            margin-bottom: 15px;
+            font-weight: 700;
+            margin-bottom: 20px;
             font-size: 1.1rem;
         }
 
@@ -153,7 +157,7 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 15px 10px;
-            margin-bottom: 30px;
+            margin-bottom: 35px; /* إبعاد الأقسام عن بعضها */
         }
 
         .checkbox-item {
@@ -161,6 +165,7 @@
             align-items: center;
             gap: 8px;
             cursor: pointer;
+            font-weight: 500;
         }
 
         input[type="checkbox"] {
@@ -187,7 +192,7 @@
         .input-group {
             display: flex;
             align-items: flex-end;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
 
         .input-group label {
@@ -208,22 +213,20 @@
             background: transparent;
             font-family: inherit;
             color: inherit;
-            font-size: 1rem;
+            font-size: 1.1rem;
             padding: 2px 5px;
             outline: none;
         }
 
+        /* الجدول الأساسي للكمبيوتر */
         .table-responsive {
             width: 100%;
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-            margin-bottom: 30px;
+            margin-bottom: 40px;
         }
 
         .rating-table {
             width: 100%;
             border-collapse: collapse;
-            min-width: 480px; 
             table-layout: fixed; 
         }
 
@@ -236,19 +239,19 @@
         }
 
         .rating-table th {
-            font-weight: 600;
-            padding-bottom: 10px;
+            font-weight: 700;
+            padding-bottom: 15px;
             text-align: center;
         }
 
         .rating-table td {
             text-align: center;
-            padding: 5px 0;
+            padding: 8px 0;
         }
 
         .rating-table td:first-child {
             text-align: left;
-            font-weight: 600;
+            font-weight: 700;
         }
 
         body.rtl .rating-table td:first-child {
@@ -263,7 +266,7 @@
 
         .star-radio::before {
             content: '☆';
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             color: var(--main-color);
         }
 
@@ -280,25 +283,26 @@
             line-height: 30px;
             padding: 0 5px;
             font-family: inherit;
-            font-size: 1rem;
+            font-size: 1.1rem;
             color: inherit;
             resize: none;
             outline: none;
             box-sizing: border-box;
+            margin-bottom: 20px;
         }
 
         footer {
             text-align: center;
-            margin-top: 40px;
+            margin-top: 50px;
             border-top: 1px dashed var(--main-color);
-            padding-top: 20px;
+            padding-top: 30px;
         }
 
         .footer-script {
             font-family: 'Playfair Display', serif;
             font-style: italic;
-            font-size: 2rem;
-            margin: 10px 0;
+            font-size: 2.2rem;
+            margin: 15px 0;
         }
 
         .submit-btn {
@@ -311,7 +315,7 @@
             cursor: pointer;
             font-family: inherit;
             font-weight: bold;
-            margin-top: 20px;
+            margin-top: 30px;
             transition: opacity 0.3s;
         }
 
@@ -328,40 +332,65 @@
             display: none;
         }
 
+        /* تحسينات الموبايل الجوهرية لضبط النجوم والمسافات */
         @media (max-width: 600px) {
-            body { padding: 10px; }
+            body { padding: 8px; }
             .container { padding: 15px; }
             .container::before { top: 4px; left: 4px; right: 4px; bottom: 4px; }
-            h2#t-main-title { font-size: 1.8rem; }
             
-            .mobile-break { display: block; }
+            h2#t-main-title { font-size: 1.8rem; }
+            .subtitle { font-size: 0.9rem; }
+            
+            .mobile-break { display: block; } /* كسر السطر في الجملة زي ما طلبت */
             
             .checkbox-group {
                 grid-template-columns: 1fr;
-                gap: 10px;
+                gap: 12px;
             }
             .input-group {
                 flex-direction: column;
                 align-items: flex-start;
             }
-            .input-group label { margin-bottom: 5px; }
+            .input-group label { margin-bottom: 8px; }
             body.rtl .input-group label { margin-left: 0; }
             .input-line { width: 100%; }
-            .star-radio::before { font-size: 1.3rem; }
-            .rating-table th { font-size: 0.8rem; }
-            .submit-btn { width: 100%; }
+            
+            /* تظبيط الجدول عشان ما يعملش سكرول نهائي */
+            .table-responsive {
+                overflow-x: hidden; 
+            }
+            .rating-table th:first-child, .rating-table td:first-child {
+                width: 32%; /* تقليل مساحة الكلمة شوية عشان النجوم تاخد راحتها */
+                font-size: 0.8rem;
+            }
+            .rating-table th:not(:first-child), .rating-table td:not(:first-child) {
+                width: 13.6%; 
+            }
+            .rating-table th {
+                font-size: 0.65rem; /* تصغير العناوين (ممتاز، جيد) عشان تركب صح */
+                padding-bottom: 8px;
+            }
+            .star-radio::before {
+                font-size: 1.1rem; /* تصغير النجمة للموبايل عشان ما تكبرش الخلية */
+            }
+            .rating-table td {
+                padding: 4px 0;
+            }
+
+            .submit-btn { width: 100%; margin-top: 20px;}
         }
     </style>
 </head>
 <body>
 
     <div class="container">
+        <!-- زرار اللغة -->
         <button class="lang-btn" id="lang-toggle" onclick="toggleLanguage()">عربي</button>
         
         <form id="feedbackForm">
             
             <header>
-                <div style="text-align: center; margin-bottom: 5px;">
+                <div style="text-align: center; margin-bottom: 10px;">
                     <img src="logo.png" alt="Picky Logo" style="max-width: 200px; height: auto; object-fit: contain;">
                 </div>
                 
@@ -395,13 +424,13 @@
             </div>
 
             <div class="section-title" id="t-sec2">2. Tell Us About You</div>
-            <div style="margin-bottom: 30px;">
+            <div style="margin-bottom: 40px;">
                 <div class="input-group">
                     <label id="t-name">Name:</label>
                     <input type="text" name="customer_name" class="input-line" required>
                 </div>
                 <div class="input-group">
-                    <label id="t-phone">Phone Number:</label>
+                    <label id="t-phone">Phone Number (Optional):</label>
                     <input type="tel" name="phone_number" class="input-line">
                 </div>
                 <div class="input-group">
@@ -411,9 +440,9 @@
             </div>
 
             <div class="section-title" id="t-sec3">3. Let's Talk About Your Drink</div>
-            <div style="margin-bottom: 30px;">
-                <label style="font-weight: 600; display: block; margin-bottom: 10px;" id="t-what-ordered">What did you order?</label>
-                <input type="text" name="drink_ordered" class="input-line" style="width: 100%; margin-bottom: 10px;">
+            <div style="margin-bottom: 40px;">
+                <label style="font-weight: 600; display: block; margin-bottom: 15px;" id="t-what-ordered">What did you order?</label>
+                <input type="text" name="drink_ordered" class="input-line" style="width: 100%; margin-bottom: 15px;">
                 <input type="text" class="input-line" style="width: 100%;">
             </div>
 
@@ -514,6 +543,7 @@
     <script>
         const scriptURL = 'https://script.google.com/macros/s/AKfycbwG-QI3PLWWv55VXkMFZCIAae0_qE_WrHaA_SBQ5AMGJaMJZcPaD1inWV_sAOJ9ya3k/exec';
 
+        // القاموس - مترجم وجاهز بالاستثناء بتاعك للغة العربية
         const dictionary = {
             en: {
                 "lang-toggle": "عربي",
@@ -524,7 +554,7 @@
                 "t-ig": "Instagram", "t-walk": "Walk-in", "t-tt": "TikTok", 
                 "t-ordered": "Ordered Before", "t-fb": "Facebook", "t-friend": "Friend / Family", "t-other": "Other:",
                 "t-sec2": "2. Tell Us About You",
-                "t-name": "Name:", "t-phone": "Phone Number:", "t-email": "Email (Optional):",
+                "t-name": "Name:", "t-phone": "Phone Number (Optional):", "t-email": "Email (Optional):",
                 "t-sec3": "3. Let's Talk About Your Drink",
                 "t-what-ordered": "What did you order?",
                 "t-sec4": "4. Rate Your Experience",
@@ -545,7 +575,7 @@
                 "t-ig": "انستجرام", "t-walk": "جيت بالصدفة", "t-tt": "تيك توك", 
                 "t-ordered": "طلبت قبل كده", "t-fb": "فيسبوك", "t-friend": "صديق / عائلة", "t-other": "غير ذلك:",
                 "t-sec2": "عرفنا عن نفسك .2",
-                "t-name": "الاسم:", "t-phone": "رقم الموبايل:", "t-email": "البريد الإلكتروني (اختياري):",
+                "t-name": "الاسم:", "t-phone": "رقم الموبايل (اختياري):", "t-email": "البريد الإلكتروني (اختياري):",
                 "t-sec3": "خلينا نتكلم عن مشروبك .3",
                 "t-what-ordered": "طلبت ايه؟",
                 "t-sec4": "قيم تجربتك .4",
