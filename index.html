@@ -666,30 +666,31 @@
         form.addEventListener('submit', async e => {
             e.preventDefault();
 
-            // 1. تغيير حالة الزرار عشان نمنع العميل يدوس مرتين
+            // 1. تغيير حالة الزرار
             const originalBtnText = submitBtn.innerText;
             submitBtn.innerText = currentLang === 'en' ? 'Sending...' : 'جاري الإرسال...';
             submitBtn.style.opacity = '0.7';
             submitBtn.disabled = true;
 
-            // 2. تجميع وتأمين البيانات من ثغرة الإكسيل
+            // 2. تجميع وتأمين البيانات
             const formData = new FormData(form);
             const dataToSend = new URLSearchParams();
 
-            f// Sanitize data and force phone numbers to be stored as text
+            // 3. الفلترة المزدوجة (تأمين المعادلات + الحفاظ على صفر التليفون)
             for (let [key, value] of formData.entries()) {
-                if (key === 'phone_number' && value.trim() !== '') {
-                    // Prepend single quote to prevent Google Sheets from dropping the leading zero
+                if (key === 'phone_number' && typeof value === 'string' && value.trim() !== '') {
+                    // إضافة علامة تنصيص مفردة لمنع الإكسيل من مسح الصفر
                     dataToSend.append(key, "'" + value);
                 } else if (typeof value === 'string' && (value.startsWith('=') || value.startsWith('+') || value.startsWith('-') || value.startsWith('@'))) {
+                    // تأمين ثغرة المعادلات
                     dataToSend.append(key, ' ' + value); 
                 } else {
                     dataToSend.append(key, value);
                 }
             }
             
+            // 4. الإرسال الفوري (حيلة الآيفون - Hidden Iframe)
             try {
-                // The ultimate workaround for iOS Safari strict tracking prevention: Hidden Iframe
                 const iframeName = 'hidden_iframe_' + Date.now();
                 const iframe = document.createElement('iframe');
                 iframe.name = iframeName;
@@ -699,9 +700,8 @@
                 const tempForm = document.createElement('form');
                 tempForm.method = 'POST';
                 tempForm.action = scriptURL;
-                tempForm.target = iframeName; // Submit payload into the invisible iframe
+                tempForm.target = iframeName;
 
-                // Inject sanitized data
                 for (let [key, value] of dataToSend.entries()) {
                     const input = document.createElement('input');
                     input.type = 'hidden';
@@ -711,20 +711,18 @@
                 }
 
                 document.body.appendChild(tempForm);
-                
-                // Native form submission (Bypasses Safari's fetch queuing)
-                tempForm.submit();
+                tempForm.submit(); // إطلاق الداتا لجوجل
 
-                // 1.5 seconds delay to guarantee network packet dispatch before UI alert
+                // الانتظار ثانية ونصف لضمان الإرسال قبل إظهار رسالة النجاح
                 setTimeout(() => {
                     alert(dictionary[currentLang]['t-success']);
                     form.reset();
                     
-                    // Clean up DOM
+                    // تنظيف الصفحة من الكود الوهمي
                     document.body.removeChild(tempForm);
                     setTimeout(() => document.body.removeChild(iframe), 5000);
                     
-                    // Reset button state
+                    // إرجاع الزرار لشكله الطبيعي
                     submitBtn.innerText = originalBtnText;
                     submitBtn.style.opacity = '1';
                     submitBtn.disabled = false;
