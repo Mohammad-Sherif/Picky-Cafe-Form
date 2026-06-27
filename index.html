@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Picky Cafe - Feedback</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Playfair+Display:ital,wght@0,700;1,400&family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Playfair+Display:ital,wght@0,700;1,400&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-color: #f4e1d6; 
@@ -23,20 +23,19 @@
             transition: all 0.3s ease;
         }
 
-        /* RTL Support */
         body.rtl {
             direction: rtl;
             text-align: right;
-            font-family: 'Cairo', sans-serif;
+            font-family: 'Tajawal', sans-serif;
         }
 
         body.rtl h1, body.rtl h2, body.rtl .subtitle, body.rtl .section-title {
-            font-family: 'Cairo', sans-serif;
+            font-family: 'Tajawal', sans-serif;
             letter-spacing: normal;
         }
 
         body.rtl .input-line, body.rtl .lined-textarea, body.rtl button {
-            font-family: 'Cairo', sans-serif;
+            font-family: 'Tajawal', sans-serif;
         }
 
         body.rtl .footer-script {
@@ -69,7 +68,6 @@
             pointer-events: none;
         }
 
-        /* Language Button */
         .lang-btn {
             position: absolute;
             top: 15px;
@@ -82,7 +80,7 @@
             cursor: pointer;
             font-weight: bold;
             z-index: 10;
-            font-family: 'Cairo', sans-serif;
+            font-family: 'Tajawal', sans-serif;
         }
 
         body.rtl .lang-btn {
@@ -91,7 +89,6 @@
             font-family: 'Poppins', sans-serif;
         }
 
-        /* Header Styles */
         header {
             text-align: center;
             margin-bottom: 30px;
@@ -120,7 +117,6 @@
             font-weight: 600;
         }
 
-        /* Heart Divider */
         .heart-divider {
             display: flex;
             align-items: center;
@@ -136,11 +132,12 @@
             margin: 0 15px;
         }
 
-        .heart-divider span {
-            font-size: 1.2rem;
+        .heart-divider svg {
+            width: 18px;
+            height: 18px;
+            fill: var(--main-color);
         }
 
-        /* Section Styles */
         .section-title {
             background-color: var(--main-color);
             color: var(--bg-color);
@@ -216,7 +213,6 @@
             outline: none;
         }
 
-        /* Table Responsive Wrapper */
         .table-responsive {
             width: 100%;
             overflow-x: auto;
@@ -227,12 +223,22 @@
         .rating-table {
             width: 100%;
             border-collapse: collapse;
-            min-width: 480px; /* Forces table to maintain shape on mobile */
+            min-width: 480px; 
+            table-layout: fixed; 
+        }
+
+        .rating-table th:first-child, .rating-table td:first-child {
+            width: 35%; 
+        }
+
+        .rating-table th:not(:first-child), .rating-table td:not(:first-child) {
+            width: 13%; 
         }
 
         .rating-table th {
             font-weight: 600;
             padding-bottom: 10px;
+            text-align: center;
         }
 
         .rating-table td {
@@ -318,46 +324,32 @@
             cursor: not-allowed;
         }
 
-        /* Mobile Optimization overrides */
+        .mobile-break {
+            display: none;
+        }
+
         @media (max-width: 600px) {
-            body {
-                padding: 10px;
-            }
-            .container {
-                padding: 15px;
-            }
-            .container::before {
-                top: 4px; left: 4px; right: 4px; bottom: 4px;
-            }
-            h2#t-main-title {
-                font-size: 1.8rem;
-            }
+            body { padding: 10px; }
+            .container { padding: 15px; }
+            .container::before { top: 4px; left: 4px; right: 4px; bottom: 4px; }
+            h2#t-main-title { font-size: 1.8rem; }
+            
+            .mobile-break { display: block; }
+            
             .checkbox-group {
-                grid-template-columns: 1fr; /* Stack checkboxes */
+                grid-template-columns: 1fr;
                 gap: 10px;
             }
             .input-group {
                 flex-direction: column;
                 align-items: flex-start;
             }
-            .input-group label {
-                margin-bottom: 5px;
-            }
-            body.rtl .input-group label {
-                margin-left: 0;
-            }
-            .input-line {
-                width: 100%;
-            }
-            .star-radio::before {
-                font-size: 1.3rem; /* Slightly smaller stars */
-            }
-            .rating-table th {
-                font-size: 0.8rem;
-            }
-            .submit-btn {
-                width: 100%; /* Full width button on mobile */
-            }
+            .input-group label { margin-bottom: 5px; }
+            body.rtl .input-group label { margin-left: 0; }
+            .input-line { width: 100%; }
+            .star-radio::before { font-size: 1.3rem; }
+            .rating-table th { font-size: 0.8rem; }
+            .submit-btn { width: 100%; }
         }
     </style>
 </head>
@@ -375,11 +367,15 @@
                 
                 <p id="t-slogan">Too Picky? Perfect</p>
                 <h2 id="t-main-title">We Value Your Feedback!</h2>
-                <p class="subtitle" id="t-subtitle">Thank you for choosing Picky. Your feedback helps us improve and serve you better.</p>
+                <p class="subtitle" id="t-subtitle">Thank you for choosing Picky. <br class="mobile-break"> Your feedback helps us improve and serve you better.</p>
                 
                 <div class="heart-divider">
                     <hr>
-                    <span>♥</span>
+                    <span>
+                        <svg viewBox="0 0 24 24">
+                            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                        </svg>
+                    </span>
                     <hr>
                 </div>
             </header>
@@ -516,15 +512,14 @@
     </div>
 
     <script>
-        // Google Apps Script URL
         const scriptURL = 'https://script.google.com/macros/s/AKfycbwG-QI3PLWWv55VXkMFZCIAae0_qE_WrHaA_SBQ5AMGJaMJZcPaD1inWV_sAOJ9ya3k/exec';
 
-        // Translation Dictionary
         const dictionary = {
             en: {
+                "lang-toggle": "عربي",
                 "t-slogan": "Too Picky? Perfect",
                 "t-main-title": "We Value Your Feedback!",
-                "t-subtitle": "Thank you for choosing Picky. Your feedback helps us improve and serve you better.",
+                "t-subtitle": "Thank you for choosing Picky. <br class='mobile-break'> Your feedback helps us improve and serve you better.",
                 "t-sec1": "1. How Did You Hear About Us?",
                 "t-ig": "Instagram", "t-walk": "Walk-in", "t-tt": "TikTok", 
                 "t-ordered": "Ordered Before", "t-fb": "Facebook", "t-friend": "Friend / Family", "t-other": "Other:",
@@ -542,9 +537,10 @@
                 "t-success": "Thank you! Your feedback has been submitted successfully."
             },
             ar: {
+                "lang-toggle": "English",
                 "t-slogan": "Too Picky? Perfect",
                 "t-main-title": "رأيكم يهمنا!",
-                "t-subtitle": "شكراً لاختيارك Picky. رأيك يساعدنا نطور ونقدم لك تجربة أفضل.",
+                "t-subtitle": "شكراً لاختيارك Picky. <br class='mobile-break'> رأيك يساعدنا نطور ونقدم لك تجربة أفضل.",
                 "t-sec1": "عرفتنا ازاي .1",
                 "t-ig": "انستجرام", "t-walk": "جيت بالصدفة", "t-tt": "تيك توك", 
                 "t-ordered": "طلبت قبل كده", "t-fb": "فيسبوك", "t-friend": "صديق / عائلة", "t-other": "غير ذلك:",
@@ -570,21 +566,18 @@
             
             if (currentLang === 'ar') {
                 document.body.classList.add('rtl');
-                document.getElementById('lang-toggle').innerText = 'English';
             } else {
                 document.body.classList.remove('rtl');
-                document.getElementById('lang-toggle').innerText = 'عربي';
             }
 
             for (const key in dictionary[currentLang]) {
                 const element = document.getElementById(key);
                 if (element) {
-                    element.innerText = dictionary[currentLang][key];
+                    element.innerHTML = dictionary[currentLang][key]; 
                 }
             }
         }
 
-        // Background Submission Logic
         const form = document.getElementById('feedbackForm');
         const submitBtn = document.getElementById('t-submit');
 
