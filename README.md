@@ -2,6 +2,10 @@
 
 A lightweight, responsive, and serverless feedback collection system designed for cafes and restaurants. This project uses a static HTML/CSS/JS frontend hosted on GitHub Pages and a Google Sheets backend via Google Apps Script to store feedback automatically.
 
+## 👨‍💻 Developed By
+**Mohammad Sherif**
+- **GitHub:** [@mohammad-sherif](https://github.com/mohammad-sherif)
+- 
 ## Features
 - **Serverless Architecture:** No backend hosting required.
 - **Bilingual UI:** Easily toggle between English and Arabic.
